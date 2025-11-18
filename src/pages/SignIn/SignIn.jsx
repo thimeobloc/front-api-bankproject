@@ -1,6 +1,8 @@
 import React from 'react';
+import {useNavigate} from "react-router-dom";
 
 export default function Signing() {
+    const navigate = useNavigate();
     return (
         <div className="background">
             <div className="SignForm">
@@ -12,7 +14,7 @@ export default function Signing() {
             <input type="text" placeholder="Confirmer le Mot de passe"/>
 
             <button> S'inscrire</button>
-            <button> J'ai déja un compte</button>
+            <button onClick={() => navigate("/Login")}> J'ai déja un compte</button>
             </div>
         </div>
     );
