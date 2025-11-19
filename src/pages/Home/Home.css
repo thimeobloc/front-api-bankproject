@@ -1,4 +1,6 @@
-/* Font + background */
+/* -----------------------------
+   Font + background
+------------------------------ */
 body {
   margin: 0;
   font-family: "Arial, sans-serif";
@@ -6,7 +8,9 @@ body {
   color: #fff;
 }
 
-/* Container général */
+/* -----------------------------
+   Container général
+------------------------------ */
 .home-container {
   display: flex;
   flex-direction: column;
@@ -73,7 +77,7 @@ body {
 ------------------------------ */
 .accounts-section {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto 50px;
 }
 
@@ -93,9 +97,9 @@ body {
 /* Cartes compte */
 .account-card {
   background: var(--card-bg);
-  padding: 20px;
+  padding: 25px;
   border-radius: 15px;
-  width: 230px;
+  width: 350px; /* plus large pour PC */
   text-align: center;
   transition: transform 0.2s, background 0.2s;
 }
@@ -151,3 +155,54 @@ body {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.8);
 }
+
+
+.welcome-section {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.welcome-section h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.welcome-section p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+}
+
+.welcome-actions button {
+  margin: 10px;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.welcome-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* -----------------------------
+   MEDIA QUERIES (responsive)
+------------------------------ */
+@media (max-width: 768px) {
+  .account-card {
+    width: 90%; /* Full width sur mobile */
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+
