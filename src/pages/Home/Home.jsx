@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import './Home.css';
 import "../../../src/pages/Beneficiary/Beneficiary.css"
 
+import OpenAccountModal from "../../../src/components/home/OpenAccountModal"
+
 export default function Home() {
   // --------------------------
   // Etat connexion
@@ -27,10 +29,14 @@ export default function Home() {
     ],
   };
 
-  const totalBalance = user.accounts.reduce(
+
+    const totalBalance = user.accounts.reduce(
     (sum, acc) => sum + acc.balance,
     0
   );
+
+    const [open, setOpen] = React.useState(false);
+    const openModal = ()=> setOpen(true);
 
   return (
     <section className="home-container">
@@ -61,7 +67,7 @@ export default function Home() {
             <ul>
               <li>Compte principal</li>
               <li>Épargne</li>
-              <li>Nouveau compte</li>
+              <li ><a onClick={() => openModal()}> Nouveau compte </a></li>
               <li>Historique</li>
               <li>Infos personnelles</li>
             </ul>
@@ -95,7 +101,9 @@ export default function Home() {
                 ))}
             </div>
           </section>
-
+            <OpenAccountModal
+                open={open}
+            />
           {/* Footer */}
           <footer className="home-footer">
             <p>© 2025 Votre Banque — Tous droits réservés</p>
