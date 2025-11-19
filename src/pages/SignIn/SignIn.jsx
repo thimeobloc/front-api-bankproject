@@ -13,31 +13,52 @@ export default function Signing() {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    if (password !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas");
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError("Les mots de passe ne correspondent pas");
+    return;
+  }
 
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/users/", {
-        name,
-        email,
-        password,
-      });
+  console.log("Envoi des données au serveur :", { name, email, password });
 
-        Cookies.set("access_token", response.data.access_token, {expires: 1,});
-      navigate("/Home");
-    } catch (err) {
-      if (err.response) {
-        setError(err.response.data.detail || "Erreur lors de l'inscription");
-      } else {
-        setError("Erreur réseau ou serveur indisponible");
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/users/",
+      { name, email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
+    );
+
+    console.log("✅ Requête réussie !");
+    console.log("Response complète :", response);
+    console.log("Response.data :", response.data);
+
+    Cookies.set("access_token", response.data.access_token, { expires: 1 });
+    navigate("/Home");
+  } catch (err) {
+    console.error("❌ Erreur lors de la requête :", err);
+    setError(err.response.data.detail || "Erreur lors de l'inscription");
+
+    if (err.response) {
+      // Le serveur a répondu avec un code d'erreur (400, 500, etc.)
+      console.error("Détail de la réponse :", err.response.data);
+      setError(err.response.data.detail || "Erreur lors de l'inscription");
+    } else if (err.request) {
+      // La requête a été envoyée mais aucune réponse n'a été reçue
+      console.error("Pas de réponse du serveur :", err.request);
+      setError("Erreur réseau ou serveur indisponible");
+    } else {
+      // Erreur côté axios ou autre
+      console.error("Erreur inconnue :", err.message);
+      setError("Erreur inattendue");
     }
-  };
+  }
+};
 
     return (
         <section>
