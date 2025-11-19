@@ -1,9 +1,3 @@
-/* Couleurs bleu et vert */
-:root {
-  --primary-gradient: linear-gradient(135deg, #4caf50, #2196f3);
-  --card-bg: rgba(255, 255, 255, 0.15);
-  --card-hover: rgba(255, 255, 255, 0.3);
-}
 
 body {
   margin: 0;

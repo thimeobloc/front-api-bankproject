@@ -1,0 +1,114 @@
+input{
+    background-color: rgba(0, 0, 0, 0.461);
+    border-color: #80FFD7;
+    border-radius:0.5rem;
+    color:white;
+    height: 1.5rem;
+    width: 25%;
+    margin-bottom: 1%;
+}
+
+h1, h2, h3, p{
+    color:#B4FAE7;
+    font-family: serif;
+}
+h1{
+    font-size: 2rem;
+}
+h2{
+    font-size: 1.5rem;
+}
+h3{
+    font-size: 1rem;
+}
+        
+p{
+    font-size: 0.5rem;
+}
+
+.center{
+    height: calc(100vh - 50px); 
+    border-bottom: none;
+    padding : 1%;
+    flex-direction: column;
+    display: flex;
+    float:none;
+    align-items: center;
+    text-align: center;
+    width: 100%; 
+}
+
+.list{
+    padding : 2%;
+    background-color: rgba(0, 0, 0, 0.461);
+    border-radius:0.5rem;
+    margin-bottom:0;
+    border-bottom: none;
+    flex-direction: column;
+    display: flex;
+    float:none;
+    align-items: left;
+    text-align: left;
+    width: 65%; 
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.listElement{
+    padding : 1.5%;
+    flex-direction: row;
+    display: flex;
+    img{
+        justify-content: center;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 100%;
+    }
+    
+    .element{
+        display: flex;
+        justify-content: center;
+        margin-left: 15px;
+        margin-right: 0;
+        flex-direction: column;
+        h3, p{
+            margin:0;
+            padding: 0;
+        }
+    }
+
+}
+.listElement:hover{
+    background-color: #80ffd776;
+    border-radius: 0.5rem;
+    h3, p{
+        color:#031f2d;
+    }
+}
+
+.fixed_button{
+    position :fixed;
+    width: 5rem;
+    height: 5rem;
+    bottom: 10%;
+    right: 10%;
+    border-radius: 20%;
+    padding:4px;
+    background: #B4FAE7;
+    color:black;
+    display:block;
+}
+
+@media (min-width: 950px) {
+    .fixed_button{
+        height: 5rem;
+        width: 5rem;
+        right: 5%;
+        bottom: 5%;
+        border-radius: 20%;
+        padding:4px;
+        display:block;
+    }
+}
+

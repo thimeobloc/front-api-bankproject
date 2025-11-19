@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+html {
+    min-height: 100vh;
+
+    background: linear-gradient(45deg, #0e5328, #095277);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
