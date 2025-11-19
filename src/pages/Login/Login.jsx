@@ -4,7 +4,7 @@ import "../../../src/pages/Beneficiary/Beneficiary.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import * as jwtDecode from "jwt-decode"; // Compatible Vite
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -23,20 +23,16 @@ export default function Login() {
             });
 
             const token = response.data.access_token;
-
             Cookies.set("token", token, { expires: 1 });
 
-            // Décodage du token
-            const decoded = jwtDecode(token);
+            const decoded = jwtDecode.default(token);
             const userId = decoded.user_id;
 
-            // Récupération du user
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
-
-            // Sauvegarde locale
             localStorage.setItem("user", JSON.stringify(userResponse.data));
 
-            navigate("/Home");
+            navigate("/"); 
+            window.location.reload(); // force Header update
 
         } catch (err) {
             setError(err.response?.data?.detail || "Erreur lors de la connexion");
@@ -49,11 +45,21 @@ export default function Login() {
                 <div className="SignForm">
                     <h1>Connexion</h1>
 
-                    <input className="input_field" type="text" placeholder="Adresse Email"
-                           value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input
+                        className="input_field"
+                        type="text"
+                        placeholder="Adresse Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
 
-                    <input className="input_field" type="password" placeholder="Mot de passe"
-                           value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input
+                        className="input_field"
+                        type="password"
+                        placeholder="Mot de passe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
                     <button onClick={loginSuccess}>Se connecter</button>
                     <button onClick={() => navigate("/Signing")}>Je n'ai pas de compte</button>
