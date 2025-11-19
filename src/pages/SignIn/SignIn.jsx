@@ -48,9 +48,9 @@ export default function Signing() {
                                value={name} onChange={(e) => setName(e.target.value)} />
                         <input className="input_field" type="text" placeholder="Adresse Email"
                                value={email} onChange={(e) => setEmail(e.target.value)}/>
-                        <input className="input_field" type="text" placeholder="Mot de passe"
+                        <input className="input_field" type="password" placeholder="Mot de passe"
                                value={password} onChange={(e) => setPassword(e.target.value)}/>
-                        <input className="input_field" type="text" placeholder="Confirmer le Mot de passe"
+                        <input className="input_field" type="password" placeholder="Confirmer le Mot de passe"
                                value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
 
                         <button onClick={handleSubmit}> S'inscrire</button>
