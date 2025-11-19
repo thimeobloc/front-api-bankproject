@@ -1,25 +1,88 @@
-import React from 'react';
-import {useNavigate} from "react-router-dom";
-import "../../../src/pages/Beneficiary/Beneficiary.css"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../../../src/pages/Beneficiary/Beneficiary.css";
 
 export default function Signing() {
-    const navigate = useNavigate();
-    return (
-        <div className="center">
-            <div className="background">
-                <div className="SignForm">
-                <h1>Inscription</h1>
-                <input className="input_field" type="text" placeholder="Nom" />
-                <input className="input_field" type="text" placeholder="Prenom"/>
-                <input className="input_field" type="text" placeholder="Adresse Email"/>
-                <input className="input_field" type="text" placeholder="Mot de passe"/>
-                <input className="input_field" type="text" placeholder="Confirmer le Mot de passe"/>
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
-                <button> S'inscrire</button>
-                <button onClick={() => navigate("/Login")}> J'ai déja un compte</button>
-                </div>
-            </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    // Vérification mot de passe
+    if (password !== confirmPassword) {
+      setError("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/users/", {
+        name,
+        email,
+        password,
+      });
+
+      alert(`Compte créé pour ${response.data.name} !`);
+      navigate("/Login");
+    } catch (err) {
+      // Gestion plus précise des erreurs
+      if (err.response) {
+        setError(err.response.data.detail || "Erreur lors de l'inscription");
+      } else {
+        setError("Erreur réseau ou serveur indisponible");
+      }
+    }
+  };
+
+  return (
+    <div className="center">
+      <div className="background">
+        <div className="SignForm">
+          <h1>Inscription</h1>
+          <input
+            className="input_field"
+            type="text"
+            placeholder="Nom"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            className="input_field"
+            type="email"
+            placeholder="Adresse Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className="input_field"
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            className="input_field"
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <button onClick={handleSubmit}>S'inscrire</button>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <button onClick={() => navigate("/Login")}>
+            J'ai déjà un compte
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
-
