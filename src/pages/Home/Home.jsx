@@ -35,8 +35,11 @@ export default function Home() {
     0
   );
 
-    const [open, setOpen] = React.useState(false);
-    const openModal = ()=> setOpen(true);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const openPopup = () => { setIsPopupOpen(true);};
+
+    const closePopup = () => { setIsPopupOpen(false);};
 
   return (
     <section className="home-container">
@@ -67,7 +70,7 @@ export default function Home() {
             <ul>
               <li>Compte principal</li>
               <li>Épargne</li>
-              <li ><a onClick={() => openModal()}> Nouveau compte </a></li>
+              <li ><a onClick={() => openPopup()}> Nouveau compte </a></li>
               <li>Historique</li>
               <li>Infos personnelles</li>
             </ul>
@@ -101,9 +104,10 @@ export default function Home() {
                 ))}
             </div>
           </section>
-            <OpenAccountModal
-                open={open}
-            />
+            <OpenAccountModal isOpen={isPopupOpen} onClose={closePopup}
+              title = "Ouvrir un nouveau compte"
+            >
+            </OpenAccountModal>
           {/* Footer */}
           <footer className="home-footer">
             <p>© 2025 Votre Banque — Tous droits réservés</p>
