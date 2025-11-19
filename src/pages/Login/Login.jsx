@@ -35,7 +35,7 @@ export default function Login() {
             <div className="background">
                 <div className="SignForm">
                     <h1>Connexion</h1>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+
                     <input className="input_field" type="text" placeholder="Adresse Email"
                            value={email} onChange={(e) => setEmail(e.target.value)} />
                     <input className="input_field" type="password" placeholder="Mot de passe"
@@ -43,6 +43,7 @@ export default function Login() {
 
                     <button onClick={loginSuccess}>Se connecter</button>
                     <button onClick={() => navigate("/Signing")}>Je n'ai pas de compte</button>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
             </div>
         </div>
