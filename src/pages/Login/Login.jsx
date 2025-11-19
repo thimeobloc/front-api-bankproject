@@ -22,6 +22,7 @@ export default function Login() {
                 password,
             });
 
+
             Cookies.set("token", response.data.access_token, { expires: 1 });
 
             navigate("/Home");
