@@ -1,5 +1,6 @@
 import React from 'react';
 import './Home.css';
+import "../../../src/pages/Beneficiary/Beneficiary.css"
 
 export default function Home() {
   const totalSomme = 12500; // en euros
@@ -17,20 +18,11 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <nav className="navbar">
-        <h2>Banque Exemple</h2>
-        <ul>
-          <li>Accueil</li>
-          <li>Comptes</li>
-          <li>Transactions</li>
-          <li>Profil</li>
-        </ul>
-      </nav>
 
-      <header className="home-header">
+      <section className="home-header">
         <h1>Bienvenue dans votre espace bancaire</h1>
         <p>Gérez tous vos comptes en un seul endroit</p>
-      </header>
+      </section>
 
       <section className="balance-section">
         <h2>Solde total : {totalSomme} €</h2>
@@ -50,7 +42,7 @@ export default function Home() {
         </ul>
       </section>
 
-      <section className="accounts-section">
+      <section className="accounts-section" id="accounts">
         <h3>Mes comptes</h3>
         <div className="accounts-list">
           {comptes.map((compte, index) => (
