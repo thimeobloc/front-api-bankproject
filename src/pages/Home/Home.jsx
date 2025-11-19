@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./Home.css";
+import './Home.css';
+import "../../../src/pages/Beneficiary/Beneficiary.css"
 
 export default function Home() {
   // --------------------------
@@ -32,7 +33,7 @@ export default function Home() {
   );
 
   return (
-    <div className="home-container">
+    <section className="home-container">
       {!isLoggedIn ? (
         // --------------------------
         // PAGE D'ACCUEIL NON CONNECTÉ
@@ -101,6 +102,6 @@ export default function Home() {
           </footer>
         </>
       )}
-    </div>
+    </section>
   );
 }
