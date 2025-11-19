@@ -15,7 +15,6 @@ export default function Signing() {
     e.preventDefault();
     setError("");
 
-    // Vérification mot de passe
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
       return;
@@ -31,7 +30,6 @@ export default function Signing() {
       alert(`Compte créé pour ${response.data.name} !`);
       navigate("/Login");
     } catch (err) {
-      // Gestion plus précise des erreurs
       if (err.response) {
         setError(err.response.data.detail || "Erreur lors de l'inscription");
       } else {
