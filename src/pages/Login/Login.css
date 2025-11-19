@@ -5,17 +5,10 @@
     box-sizing: border-box;
 }
 
-body {
-    background: linear-gradient(135deg, #ece9e6, #ffffff);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .background {
-    width: 100%;
-    background: #fff;
+    min-height: 90vh;
+    background-color: rgba(0, 0, 0, 0.461);
+    width: 30%;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -33,7 +26,9 @@ h1 {
     font-size: 28px;
 }
 
-input {
+.input_field {
+    height:2.5rem;
+    width: 100%;
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -41,7 +36,7 @@ input {
     transition: 0.2s;
 }
 
-input:focus {
+.input_field:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
