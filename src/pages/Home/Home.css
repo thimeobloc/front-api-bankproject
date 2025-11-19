@@ -1,11 +1,12 @@
-
+/* Font + background */
 body {
   margin: 0;
-  font-family: 'Arial, sans-serif';
+  font-family: "Arial, sans-serif";
   background: var(--primary-gradient);
   color: #fff;
 }
 
+/* Container général */
 .home-container {
   display: flex;
   flex-direction: column;
@@ -13,36 +14,36 @@ body {
   padding: 20px 40px;
 }
 
-/* Navbar */
+/* -----------------------------
+   NAVBAR (menu horizontal)
+------------------------------ */
 .navbar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
   width: 100%;
   margin-bottom: 30px;
-}
-
-.navbar h2 {
-  font-size: 1.8rem;
 }
 
 .navbar ul {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
   padding: 0;
 }
 
 .navbar li {
   cursor: pointer;
   transition: color 0.2s;
+  font-size: 1.1rem;
 }
 
 .navbar li:hover {
   color: #ffd700;
 }
 
-/* Header */
+/* -----------------------------
+   HEADER
+------------------------------ */
 .home-header {
   text-align: center;
   margin-bottom: 40px;
@@ -54,113 +55,99 @@ body {
 
 .home-header p {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.85);
 }
 
-/* Balance section */
+/* -----------------------------
+   BALANCE TOTAL
+------------------------------ */
 .balance-section h2 {
   font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  margin-bottom: 25px;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.quick-actions button {
-  margin: 5px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  background-color: rgba(255,255,255,0.2);
-  color: #fff;
-  transition: background 0.2s;
-}
-
-.quick-actions button:hover {
-  background-color: rgba(255,255,255,0.4);
-}
-
-/* Notifications */
-.notifications-section {
-  margin: 30px 0;
-}
-
-.notification {
-  background: rgba(255,255,255,0.2);
-  padding: 10px 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.notification.success {
-  border-left: 5px solid #4caf50;
-}
-
-.notification.warning {
-  border-left: 5px solid #ff9800;
-}
-
-/* Accounts */
+/* -----------------------------
+   COMPTES
+------------------------------ */
 .accounts-section {
   width: 100%;
   max-width: 900px;
-  margin-bottom: 50px;
+  margin: 0 auto 50px;
+}
+
+.accounts-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 .accounts-list {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 25px;
 }
 
+/* Cartes compte */
 .account-card {
   background: var(--card-bg);
   padding: 20px;
   border-radius: 15px;
-  min-width: 200px;
+  width: 230px;
   text-align: center;
   transition: transform 0.2s, background 0.2s;
 }
 
 .account-card:hover {
-  background: var(--card-hover);
   transform: translateY(-5px);
+  background: var(--card-hover);
 }
 
+/* Titres compte */
 .account-card h4 {
   margin-bottom: 10px;
   font-size: 1.5rem;
 }
 
-.account-card p {
-  margin: 5px 0;
-}
-
+/* Compte principal */
 .principal {
   font-weight: bold;
   border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
+/* Comptes secondaires */
 .secondaire {
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-/* Footer */
+/* -----------------------------
+   Boutons actions rapides
+------------------------------ */
+.quick-actions button {
+  margin: 6px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.quick-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* -----------------------------
+   FOOTER
+------------------------------ */
 .home-footer {
   margin-top: auto;
   text-align: center;
   padding: 20px 0;
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.8);
-}
-
-.home-footer a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 5px;
-}
-
-.home-footer a:hover {
-  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.8);
 }

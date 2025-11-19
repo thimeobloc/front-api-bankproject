@@ -1,73 +1,87 @@
-import React from 'react';
-import './Home.css';
+import React from "react";
+import "./Home.css";
 
 export default function Home() {
-  const totalSomme = 12500; // en euros
+  // --------------------------
+  // Données en dur (mock)
+  // --------------------------
+  const user = {
+    name: "Jean Dupont",
+    email: "jean.dupont@example.com",
+    accounts: [
+      {
+        id: "ACC-001",
+        name: "Compte courant",
+        balance: 2540.75,
+        type: "principal",
+      },
+      {
+        id: "ACC-002",
+        name: "Compte épargne",
+        balance: 8200.5,
+        type: "secondaire",
+      },
+    ],
+  };
 
-  const comptes = [
-    { type: 'Compte Principal', nom: 'Compte Courant', solde: 8000 },
-    { type: 'Compte Secondaire', nom: 'Livret A', solde: 3000 },
-    { type: 'Compte Secondaire', nom: 'Compte Jeunes', solde: 500 }
-  ];
-
-  const notifications = [
-    { message: "Votre virement de 200€ a été effectué.", type: "success" },
-    { message: "Votre carte bancaire arrive à expiration.", type: "warning" }
-  ];
+  const totalBalance = user.accounts.reduce(
+    (sum, acc) => sum + acc.balance,
+    0
+  );
 
   return (
     <div className="home-container">
+      {/* Header */}
+      <div className="home-header">
+        <h1>Bonjour {user.name}</h1>
+        <p>Connecté avec : {user.email}</p>
+      </div>
+
+      {/* Menu */}
       <nav className="navbar">
-        <h2>Banque Exemple</h2>
         <ul>
-          <li>Accueil</li>
-          <li>Comptes</li>
-          <li>Transactions</li>
-          <li>Profil</li>
+          <li>Compte principal</li>
+          <li>Épargne</li>
+          <li>Nouveau compte</li>
+          <li>Historique</li>
+          <li>Infos personnelles</li>
         </ul>
       </nav>
 
-      <header className="home-header">
-        <h1>Bienvenue dans votre espace bancaire</h1>
-        <p>Gérez tous vos comptes en un seul endroit</p>
-      </header>
-
+      {/* Solde total */}
       <section className="balance-section">
-        <h2>Solde total : {totalSomme} €</h2>
-        <div className="quick-actions">
-          <button>Virement</button>
-          <button>Dépôt</button>
-          <button>Historique</button>
-        </div>
+        <h2>Solde total : {totalBalance.toFixed(2)} €</h2>
       </section>
 
-      <section className="notifications-section">
-        <h3>Notifications</h3>
-        <ul>
-          {notifications.map((note, index) => (
-            <li key={index} className={`notification ${note.type}`}>{note.message}</li>
-          ))}
-        </ul>
-      </section>
-
+      {/* Comptes */}
       <section className="accounts-section">
         <h3>Mes comptes</h3>
         <div className="accounts-list">
-          {comptes.map((compte, index) => (
-            <div key={index} className={`account-card ${compte.type === 'Compte Principal' ? 'principal' : 'secondaire'}`}>
-              <h4>{compte.nom}</h4>
-              <p>{compte.type}</p>
-              <p>Solde : {compte.solde} €</p>
+          {user.accounts.map((account) => (
+            <div
+              key={account.id}
+              className={`account-card ${
+                account.type === "principal" ? "principal" : "secondaire"
+              }`}
+            >
+              <h4>{account.name}</h4>
+              <p>ID : {account.id}</p>
+              <p>Solde : {account.balance.toFixed(2)} €</p>
+
+              {account.type === "principal" && (
+                <div className="quick-actions">
+                  <button>Virement</button>
+                  <button>RIB</button>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="home-footer">
-        <p>© 2025 Banque Exemple - Tous droits réservés</p>
-        <p>
-          <a href="#">Mentions légales</a> | <a href="#">Contact</a> | <a href="#">FAQ</a>
-        </p>
+        <p>© 2025 Votre Banque — Tous droits réservés</p>
       </footer>
     </div>
   );
