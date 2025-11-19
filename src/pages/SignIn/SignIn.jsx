@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../src/pages/Beneficiary/Beneficiary.css";
+import Cookies from "js-cookie";
 
 export default function Signing() {
   const navigate = useNavigate();
@@ -27,8 +28,8 @@ export default function Signing() {
         password,
       });
 
-      alert(`Compte créé pour ${response.data.name} !`);
-      navigate("/Login");
+        Cookies.set("access_token", response.data.access_token, {expires: 1,});
+      navigate("/Home");
     } catch (err) {
       if (err.response) {
         setError(err.response.data.detail || "Erreur lors de l'inscription");
