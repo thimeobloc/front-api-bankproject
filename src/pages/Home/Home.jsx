@@ -7,9 +7,6 @@ export default function Home() {
   // --------------------------
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // --------------------------
-  // Données utilisateur (mock)
-  // --------------------------
   const user = {
     name: "Jean Dupont",
     email: "jean.dupont@example.com",
@@ -51,9 +48,6 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        // --------------------------
-        // PAGE COMPTE CONNECTÉ
-        // --------------------------
         <>
           {/* Header */}
           <div className="home-header">
