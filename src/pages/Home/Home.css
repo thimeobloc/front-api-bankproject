@@ -1,0 +1,172 @@
+/* Couleurs bleu et vert */
+:root {
+  --primary-gradient: linear-gradient(135deg, #4caf50, #2196f3);
+  --card-bg: rgba(255, 255, 255, 0.15);
+  --card-hover: rgba(255, 255, 255, 0.3);
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial, sans-serif';
+  background: var(--primary-gradient);
+  color: #fff;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px 40px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.navbar h2 {
+  font-size: 1.8rem;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+}
+
+.navbar li {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.navbar li:hover {
+  color: #ffd700;
+}
+
+/* Header */
+.home-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.home-header h1 {
+  font-size: 2.8rem;
+}
+
+.home-header p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Balance section */
+.balance-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.quick-actions button {
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.quick-actions button:hover {
+  background-color: rgba(255,255,255,0.4);
+}
+
+/* Notifications */
+.notifications-section {
+  margin: 30px 0;
+}
+
+.notification {
+  background: rgba(255,255,255,0.2);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.notification.success {
+  border-left: 5px solid #4caf50;
+}
+
+.notification.warning {
+  border-left: 5px solid #ff9800;
+}
+
+/* Accounts */
+.accounts-section {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 50px;
+}
+
+.accounts-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.account-card {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 15px;
+  min-width: 200px;
+  text-align: center;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.account-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-5px);
+}
+
+.account-card h4 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.account-card p {
+  margin: 5px 0;
+}
+
+.principal {
+  font-weight: bold;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.secondaire {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Footer */
+.home-footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.home-footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.home-footer a:hover {
+  text-decoration: underline;
+}
