@@ -4,7 +4,7 @@ import "../../../src/pages/Beneficiary/Beneficiary.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -22,13 +22,25 @@ export default function Login() {
                 password,
             });
 
+            const token = response.data.access_token;
 
-            Cookies.set("token", response.data.access_token, { expires: 1 });
+            Cookies.set("token", token, { expires: 1 });
+
+            // Décodage du token
+            const decoded = jwtDecode(token);
+            const userId = decoded.user_id;
+
+            // Récupération du user
+            const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
+
+            // Sauvegarde locale
+            localStorage.setItem("user", JSON.stringify(userResponse.data));
 
             navigate("/Home");
+
         } catch (err) {
-                setError(err.response.data.detail || "Erreur lors de la connexion");
-            }
+            setError(err.response?.data?.detail || "Erreur lors de la connexion");
+        }
     };
 
     return (
@@ -39,11 +51,13 @@ export default function Login() {
 
                     <input className="input_field" type="text" placeholder="Adresse Email"
                            value={email} onChange={(e) => setEmail(e.target.value)} />
+
                     <input className="input_field" type="password" placeholder="Mot de passe"
                            value={password} onChange={(e) => setPassword(e.target.value)} />
 
                     <button onClick={loginSuccess}>Se connecter</button>
                     <button onClick={() => navigate("/Signing")}>Je n'ai pas de compte</button>
+
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
             </div>
