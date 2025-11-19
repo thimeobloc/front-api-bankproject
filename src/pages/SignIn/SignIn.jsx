@@ -14,7 +14,7 @@ export default function Signing() {
             alert("Passwords do not match");
         }
         try {
-            const response = await fetch("http://localhost:8000/users/", {
+            const response = await fetch("http://127.0.0.1:8000/users/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
