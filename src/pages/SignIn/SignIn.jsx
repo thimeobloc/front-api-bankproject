@@ -41,48 +41,50 @@ export default function Signing() {
   };
 
   return (
-    <div className="center">
-      <div className="background">
-        <div className="SignForm">
-          <h1>Inscription</h1>
-          <input
-            className="input_field"
-            type="text"
-            placeholder="Nom"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            className="input_field"
-            type="email"
-            placeholder="Adresse Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="input_field"
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            className="input_field"
-            type="password"
-            placeholder="Confirmer le mot de passe"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+    <section>
+      <div className="center">
+        <div className="background">
+          <div className="SignForm">
+            <h1>Inscription</h1>
+            <input
+              className="input_field"
+              type="text"
+              placeholder="Nom"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              className="input_field"
+              type="email"
+              placeholder="Adresse Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="input_field"
+              type="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              className="input_field"
+              type="password"
+              placeholder="Confirmer le mot de passe"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
 
-          <button onClick={handleSubmit}>S'inscrire</button>
+            <button onClick={handleSubmit}>S'inscrire</button>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <button onClick={() => navigate("/Login")}>
-            J'ai déjà un compte
-          </button>
+            <button onClick={() => navigate("/Login")}>
+              J'ai déjà un compte
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
