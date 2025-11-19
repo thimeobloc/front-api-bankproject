@@ -31,7 +31,7 @@ const account = [
     b.inputName.toLowerCase().includes(query.toLowerCase())
   );
   return (
-    <div >
+    <section>
       <div className="center">
         <h1>Vers quel bénéficiaire ?</h1>
         <SearchBar query={query} setQuery={setQuery} />
@@ -76,6 +76,6 @@ const account = [
         </div>
       </div>
       <button className ="fixed_button">Ajouter un IBAN</button>
-    </div>
+    </section>
   );
 }
