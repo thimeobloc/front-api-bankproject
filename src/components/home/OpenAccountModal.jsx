@@ -25,7 +25,7 @@ export default function OpenAccountModal({ isOpen, onClose, children, title, par
                 }
             );
             alert("Nouveau compte créé !");
-            onClose();
+            window.location.reload();
         } catch (err) {
             if (err.response) {
                 console.log("slurp")
@@ -34,6 +34,7 @@ export default function OpenAccountModal({ isOpen, onClose, children, title, par
                 setError("Erreur réseau ou serveur indisponible");
             }
         }
+        
     }
 
     const popupRef = useRef();
