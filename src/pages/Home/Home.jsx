@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 export default function Home() {
   const [user, setUser] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isRibModalOpen, setIsRibModalOpen] = useState(false);
+  const [selectedRib, setSelectedRib] = useState(null);
   const token = Cookies.get("access_token");
   const [accounts, setAccounts] = useState([]);
   const navigate = useNavigate();
@@ -58,14 +60,21 @@ export default function Home() {
     );
   }
 
-  // ------------------- FILTRAGE -------------------
   const activeAccounts = accounts.filter((account) => !account.closed);
-
   const totalBalance = activeAccounts.reduce((sum, acc) => sum + acc.balance, 0);
   const openPopup = () => setIsPopupOpen(true);
   const closePopup = () => setIsPopupOpen(false);
 
-  // ------------------- FILTRAGE DES TYPES DISPONIBLES -------------------
+  const openRibModal = (rib) => {
+    setSelectedRib(rib);
+    setIsRibModalOpen(true);
+  };
+
+  const closeRibModal = () => {
+    setIsRibModalOpen(false);
+    setSelectedRib(null);
+  };
+
   const availableAccountTypes = ACCOUNT_TYPES.filter(
     (type) => !activeAccounts.some((acc) => acc.type === type)
   );
@@ -112,7 +121,7 @@ export default function Home() {
 
               <div className="quick-actions">
                 <button>Virement</button>
-                <button onClick={openPopup}>RIB</button>
+                <button onClick={() => openRibModal(account.rib)}>RIB</button>
               </div>
             </div>
           ))}
@@ -123,9 +132,19 @@ export default function Home() {
         isOpen={isPopupOpen}
         onClose={closePopup}
         title="Ouvrir un nouveau compte"
-        accountTypes={availableAccountTypes} // <-- on ne propose que les types libres
-        existingAccounts={activeAccounts}    // <-- seulement les comptes actifs
+        accountTypes={availableAccountTypes}
+        existingAccounts={activeAccounts}
       />
+
+      {isRibModalOpen && (
+        <div className="rib-modal-overlay">
+          <div className="rib-modal">
+            <h2>Informations RIB</h2>
+            <p>{selectedRib}</p>
+            <button onClick={closeRibModal}>Fermer</button>
+          </div>
+        </div>
+      )}
 
       <footer className="home-footer">
         <p>© 2025 Votre Banque — Tous droits réservés</p>
