@@ -11,6 +11,7 @@ export default function Transfert() {
     const [beneficiaries, setBeneficiaries] = useState([]);
     const [isSecondOpen, setIsSecondOpen] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isPopupOpen2, setIsPopupOpen2] = useState(false);
 
     const [query, setQuery] = useState("");
     const [user, setUser] = useState(null);
@@ -33,14 +34,12 @@ export default function Transfert() {
                 setAccounts(res.data);
 
                 const mainAccount = res.data.find((b) => b.main);
-                console.log("Main account :", mainAccount);
                 if (!mainAccount) return;
 
                 const res2 = await axios.get(`http://127.0.0.1:8000/accounts/beneficiary/${mainAccount.id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setBeneficiaries(res2.data);
-                console.log("Beneficiaries :", res2.data);
             } catch (err) {
                 if (err.response) {
                     console.error("Erreur bénéficiaires, réponse serveur :", err.response.data);
@@ -66,6 +65,8 @@ export default function Transfert() {
     }
     const openPopup = () => { setIsPopupOpen(true);};
     const closePopup = () => { setIsPopupOpen(false);};
+    const openPopup2 = () => { setIsPopupOpen2(true);};
+    const closePopup2 = () => { setIsPopupOpen2(false);};
     const main_account = account.find((b) => b.main);
     const current_account = main_account ? main_account.id : null;
 
@@ -80,15 +81,12 @@ export default function Transfert() {
                     <div className="list">
                         <h2>Depuis ...</h2>
                         {account.map((b) => (
-                            <>
-                            <div key={b.id} onClick={() => {setSelectedAccountId(b.id); appearSecond()}}>
                             <BeneficiaryCard  
                                 name={b.type}
                                 iban={b.rib}
                                 imgUrl={b.img}
-                            >
-                            </BeneficiaryCard>
-                            </div></>
+                                onClick={() => {setSelectedAccountId(b.id);  appearSecond(); }}
+                            />
                         ))}
                     </div>
                 </div>
@@ -100,34 +98,32 @@ export default function Transfert() {
                                 <h3>Vos comptes</h3>
                                 {account.map((b) => (
                                     <BeneficiaryCard
-                                        key={b.id}
                                         name={b.type}
                                         iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
                                 ))}
                                 <h3>Vos Bénéficiaires</h3>
                                 {beneficiaries.map((b) => (
                                     <BeneficiaryCard
-                                        key={b.id}
                                         name={b.name}
                                         iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
-                                ))}
+                                ))}       
                             </>
                         ) : (
                             <>
                                 <h2>Vous recherchez : "{query}" ...</h2>
                                 {filteredBeneficiaries.map((b) => (
-
                                     <BeneficiaryCard
-                                        key={b.id}
                                         name={b.name}
                                         iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
-
                                 ))}
                             </>
                         )
@@ -144,10 +140,11 @@ export default function Transfert() {
             />
 
             <TransferModal
-                isOpen={isPopupOpen}
-                onClose={closePopup}
-                accountId={current_account}
-                title={selectedAccountId + selectedBeneficiaryRib}
+                isOpen={isPopupOpen2}
+                onClose={closePopup2}
+                accountId={selectedAccountId}
+                rib={selectedBeneficiaryRib}
+                title={"Faire un nouveau virement"}
             />
         </section>
     )

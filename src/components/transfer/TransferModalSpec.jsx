@@ -3,11 +3,9 @@ import "../../../src/pages/Account/Account.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export default function TransferModal({isOpen, onClose, title, paragraphe, accountId}) {
+export default function TransferModal({isOpen, onClose, title, paragraphe, accountId, rib}) {
     const [error, setError] = useState("");
-    const [name, setName] = useState("");
-    const [rib, setRib] = useState("");
-    const [user, setUser] = useState(null);
+    const [balance, setBalance] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,7 +13,6 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
 
         try {
             const savedUser = localStorage.getItem("user");
-            const parsedUser = savedUser ? JSON.parse(savedUser) : null;
 
             const token = Cookies.get("access_token");
             if (!token) {
@@ -23,15 +20,21 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
                 return;
             }
 
-            if (!rib || !name) {
-                setError("RIB et nom sont requis");
+            if (!balance) {
+                setError("La valeur donnée est vide");
                 return;
             }
 
-            await axios.post(`http://127.0.0.1:8000/accounts/beneficiary/${accountId}`, 
-                { rib, name }, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            if (!balance || balance <= 0) {
+                setError("Montant invalide");
+                return;
+            }
+
+            const res = await axios.post(`http://127.0.0.1:8000/balances/transfer`, 
+                { from_account_id: accountId, to_account_id: rib, amount: parseFloat(balance) }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
 
             alert("Nouveau bénéficiaire enregistré !");
             window.location.reload();
@@ -40,7 +43,7 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
             if (err.response && err.response.data && err.response.data.detail) {
                 setError(err.response.data.detail);
             } else {
-                setError("Erreur lors de la création du bénéficiaire");
+                setError("Erreur lors du virement");
             }
         }
     };
@@ -69,16 +72,12 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
     return (
         <div className="modal-overlay">
             <div className="modal-content" ref={popupRef}>
-                <h2>{title}</h2>
+                <h2>{title} compte user : {accountId} rib benef : {rib}</h2>
                 <p>{paragraphe}</p>
 
-                <label>Name :</label>
-                <input className="input_field" type="text" placeholder="Nom"
-                       value={name} onChange={(e) => setName(e.target.value)}/>
-
-                <label>Rib :</label>
-                <input className="input_field" type="text" placeholder="Rib"
-                       value={rib} onChange={(e) => setRib(e.target.value)}/>
+                <label>Montant :</label>
+                <input className="input_field" type="number" placeholder="00.00"
+                       value={balance} onChange={(e) => setBalance(e.target.value)}/>
 
                 <div className="modal-actions">
                     <button className="modal-close-btn" onClick={onClose}>Annuler</button>
