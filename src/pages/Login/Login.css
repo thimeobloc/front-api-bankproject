@@ -44,10 +44,10 @@ h1 {
 
 button {
     border-radius: 10px;
-    height: 50%;
+    height: 30px;
     border: none;
-    background: #007bff;
-    color: white;
+    background: #B4FAE7;
+    color: rgb(0, 0, 0);
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
@@ -55,7 +55,7 @@ button {
 }
 
 button:hover {
-    background: #0056c7;
+    background: #b4fae7ba;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }

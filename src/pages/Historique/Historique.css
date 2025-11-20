@@ -1,0 +1,161 @@
+/* Reset */
+.body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height:100vh;
+
+}
+
+/* ==================== */
+/*       DETAILS        */
+/* ==================== */
+
+.infosAccount {
+  padding: 25px 20px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.461);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.bankName {
+  font-size: 36px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.ibanAccount,
+.solde {
+  font-size: 18px;
+  margin: 3px 0;
+}
+
+/* ==================== */
+/*     TRANSACTION      */
+/* ==================== */
+
+.transaction-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+  h1,h2,h3,p{
+    color : #031f2d;
+  }
+}
+
+.transaction-date {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+  width: 100%;
+  color: #80FFD7;
+}
+
+.transaction-item {
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  max-width: 400px;
+  background-color: #80ffd776;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid transparent;
+}
+
+.transaction-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+.transaction-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.transaction-beneficiary {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 3px;
+  color : #031f2d;
+
+}
+
+.transaction-category {
+  font-size: 12px;
+  color : #031f2d;
+}
+
+.transaction-saldo {
+  font-weight: bold;
+  font-size: 15px;
+  color : #031f2d;
+}
+
+/* ==================== */
+/*        MODAL         */
+/* ==================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #80ffd776;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  animation: fadeIn 0.25s ease-in-out;
+  font-weight: bold;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.modal-close-btn {
+  margin-top: 20px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #0077ff;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: #005fcc;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
