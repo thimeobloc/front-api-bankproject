@@ -72,7 +72,7 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
     return (
         <div className="modal-overlay">
             <div className="modal-content" ref={popupRef}>
-                <h2>{title} compte user : {accountId} rib benef : {rib}</h2>
+                <h2>{title}</h2>
                 <p>{paragraphe}</p>
 
                 <label>Montant :</label>
