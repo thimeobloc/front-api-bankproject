@@ -1,41 +1,35 @@
 import React, { useState, useEffect } from "react";
 import './Home.css';
 import "../../../src/pages/Beneficiary/Beneficiary.css";
+import OpenAccountModal from "../../../src/components/home/OpenAccountModal"
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const token = Cookies.get("access_token");
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    if (savedUser) setUser(JSON.parse(savedUser));
 
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    if (!token) return; 
 
-      if (token) {
-        fetch("http://127.0.0.1:8000/accounts/myaccounts/", {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        })
-        .then(async res => {
-          if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Erreur API: ${res.status} - ${text}`);
-          }
-          return res.json();
-        })
-        .then(data => {
-          if (Array.isArray(data)) setAccounts(data);
-          else setAccounts([]);
-        })
-        .catch(err => console.error("Erreur chargement comptes :", err));
-      }
-    }
-  }, []);
+    axios
+      .get("http://127.0.0.1:8000/accounts/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setAccounts(res.data);
+      })
+      .catch((err) => {
+        console.error("Erreur de chargement des comptes :", err);
+      });
+  }, [token]);
 
   if (!user) {
     return (
@@ -45,9 +39,11 @@ export default function Home() {
       </div>
     );
   }
+  const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
 
-  const totalBalance = accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
+  const openPopup = () => { setIsPopupOpen(true);};
 
+  const closePopup = () => { setIsPopupOpen(false);};
   return (
     <section className="home-container">
       <div className="home-header">
@@ -55,13 +51,16 @@ export default function Home() {
         <p>Connecté avec : {user.email}</p>
       </div>
 
-      <nav className="navbar">
-        <ul>
-          {accounts.map(acc => (
-            <li key={acc.id}>Compte #{acc.id} — {acc.balance.toFixed(2)} €</li>
-          ))}
-        </ul>
-      </nav>
+          {/* Menu */}
+          <nav className="navbar">
+            <ul>
+              <li>Compte principal</li>
+              <li>Épargne</li>
+              <li ><a onClick={() => openPopup()}> Nouveau compte </a></li>
+              <li>Historique</li>
+              <li>Infos personnelles</li>
+            </ul>
+          </nav>
 
       <section className="balance-section">
         <h2>Solde total : {totalBalance.toFixed(2)} €</h2>
@@ -83,7 +82,10 @@ export default function Home() {
           ))}
         </div>
       </section>
-
+        <OpenAccountModal isOpen={isPopupOpen} onClose={closePopup}
+            title = "Ouvrir un nouveau compte"
+          >
+        </OpenAccountModal>
       <footer className="home-footer">
         <p>© 2025 Votre Banque — Tous droits réservés</p>
       </footer>

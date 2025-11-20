@@ -10,7 +10,7 @@ export default function TransactionModal({ transaction, onClose }) {
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2>Détails de la transaction</h2>
+        <h1>Détails de la transaction</h1>
 
         <p>Bénéficiaire : {transaction.Beneficiaries}</p>
         <p>Date : {transaction.Date}</p>

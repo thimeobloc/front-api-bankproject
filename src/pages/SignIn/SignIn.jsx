@@ -28,8 +28,9 @@ export default function Signing() {
         password,
       });
 
-        Cookies.set("access_token", response.data.access_token, {expires: 1,});
-      navigate("/Home");
+        Cookies.set("access_token", response.data.access_token, { expires: 1 })
+        Cookies.set("user_id", response.data.user.id, { expires: 1 });
+      navigate("/");
     } catch (err) {
       if (err.response) {
         setError(err.response.data.detail || "Erreur lors de l'inscription");
