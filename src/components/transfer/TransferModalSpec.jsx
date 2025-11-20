@@ -31,7 +31,7 @@ export default function TransferModal({isOpen, onClose, title, paragraphe, accou
             }
 
             const res = await axios.post(`http://127.0.0.1:8000/balances/transfer`, 
-                { from_account_id: accountId, to_account_id: rib, amount: parseFloat(balance) }, 
+                { from_account_id: accountId, to_rib: rib, amount: parseFloat(balance) }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
