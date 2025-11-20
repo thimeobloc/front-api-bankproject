@@ -1,116 +1,181 @@
-/* Reset */
-.body {
+body {
   margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  height:100vh;
-
+  font-family: "Arial, sans-serif";
+  background: var(--primary-gradient);
+  color: #fff;
 }
 
-/* ==================== */
-/*       DETAILS        */
-/* ==================== */
-
-.infosAccount {
-  padding: 25px 20px;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.461);
-  color: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-}
-
-.bankName {
-  font-size: 36px;
-  margin-top: 10px;
-  margin-bottom: 6px;
-}
-
-.ibanAccount,
-.solde {
-  font-size: 18px;
-  margin: 3px 0;
-}
-
-/* ==================== */
-/*     TRANSACTION      */
-/* ==================== */
-
-.transaction-container {
+.account-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 25px;
-  h1,h2,h3,p{
-    color : #031f2d;
+  min-height: 100vh;
+  padding: 20px 40px;
+  gap: 30px;
+}
+
+.two-columns {
+  flex-direction: row;
+  gap: 40px;
+}
+
+/* Colonnes */
+.account-info-column {
+  flex: 1;
+  max-width: 350px;
+}
+
+.transactions-column {
+  flex: 2;
+}
+
+/* Titres */
+.account-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Infos du compte */
+.account-info {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.account-info p {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.account-info p strong {
+  color: #ffd700;
+}
+
+/* Boutons */
+.account-buttons,
+.deposit-withdraw-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  background-color: rgba(255,255,255,0.4);
+  transform: translateY(-2px);
+}
+
+.btn.danger {
+  background-color: #f44336;
+}
+
+.btn.danger:hover {
+  background-color: #d32f2f;
+}
+
+/* Transactions Table */
+.transactions-column h1 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  margin-top: 10px;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.transactions-table th {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 1.1rem;
+}
+
+.transactions-table tr:last-child td {
+  border-bottom: none;
+}
+
+.transactions-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Barre de filtres */
+.transaction-filter-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.filter-btn:hover {
+  background-color: rgba(255,255,255,0.35);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background-color: rgba(255, 215, 0, 0.85);
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .two-columns {
+    flex-direction: column;
+  }
+
+  .account-info-column, .transactions-column {
+    max-width: 100%;
   }
 }
 
-.transaction-date {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  text-align: center;
-  width: 100%;
-  color: #80FFD7;
-}
-
-.transaction-item {
-  border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  width: 400px;
-  max-width: 400px;
-  background-color: #80ffd776;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-  border-left: 4px solid transparent;
-}
-
-.transaction-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-}
-
-.transaction-left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.transaction-beneficiary {
-  font-weight: 700;
-  font-size: 15px;
-  margin-bottom: 3px;
-  color : #031f2d;
-
-}
-
-.transaction-category {
-  font-size: 12px;
-  color : #031f2d;
-}
-
-.transaction-saldo {
-  font-weight: bold;
-  font-size: 15px;
-  color : #031f2d;
-}
-
-/* ==================== */
-/*      MODAL (HOME)    */
-/* ==================== */
-
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55); /* même opacité que home */
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,98 +183,50 @@
   z-index: 9999;
 }
 
-/* Contenu centré */
 .modal-content {
-  background: var(--card-bg); /* même fond que les cards de Home */
+  background: var(--card-bg);
   padding: 30px 35px;
   width: 420px;
   max-width: 92%;
-
-  border-radius: 20px; /* arrondi comme les cards */
-  border: 2px solid rgba(255, 255, 255, 0.5); /* cadre identique */
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-
   animation: fadeIn 0.25s ease-in-out;
   color: white;
   text-align: center;
 }
 
-/* Titre */
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 1.8rem;
-  color: #fff;
 }
 
-/* Texte */
-.modal-content p,
-.modal-content label {
-  margin: 10px 0;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-}
-
-.modal-content select option {
-  background: #10232e;       /* couleur foncée lisible */
-  color: white;              /* texte blanc */
-  padding: 10px;
-}
-
-
-/* Select */
-.modal-content select {
+.modal-content input {
   width: 100%;
   padding: 12px 14px;
   margin-top: 10px;
-
   border-radius: 12px;
   border: none;
   outline: none;
-
   background: rgba(255,255,255,0.2);
   color: #fff;
-
   font-size: 1rem;
-  cursor: pointer;
+  text-align: center;
   transition: 0.2s;
 }
 
-.modal-content select:hover {
+.modal-content input:hover {
   background: rgba(255,255,255,0.3);
 }
 
-/* Actions */
 .modal-actions {
   margin-top: 25px;
   display: flex;
   justify-content: space-between;
 }
 
-/* Boutons */
-.modal-close-btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-
-  background-color: rgba(255, 255, 255, 0.25);
-  color: white;
-
-  transition: background 0.2s, transform 0.2s;
-}
-
-.modal-close-btn:hover {
-  background-color: rgba(255,255,255,0.45);
-  transform: translateY(-2px);
-}
-
-/* Animation */
 @keyframes fadeIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
-

@@ -13,8 +13,10 @@ export default function Home() {
   const [accounts, setAccounts] = useState([]);
   const navigate = useNavigate();
 
-  const handleNavigation = (path) => {
-    console.log(`[Header] Navigation vers ${path}`);
+  const handleNavigation = (path, account = null) => {
+    if (account) {
+      localStorage.setItem("selectedAccount", JSON.stringify(account));
+    }
     navigate(path);
   };
 
@@ -56,9 +58,17 @@ export default function Home() {
     );
   }
 
-  const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+  // ------------------- FILTRAGE -------------------
+  const activeAccounts = accounts.filter((account) => !account.closed);
+
+  const totalBalance = activeAccounts.reduce((sum, acc) => sum + acc.balance, 0);
   const openPopup = () => setIsPopupOpen(true);
   const closePopup = () => setIsPopupOpen(false);
+
+  // ------------------- FILTRAGE DES TYPES DISPONIBLES -------------------
+  const availableAccountTypes = ACCOUNT_TYPES.filter(
+    (type) => !activeAccounts.some((acc) => acc.type === type)
+  );
 
   return (
     <section className="home-container">
@@ -86,17 +96,18 @@ export default function Home() {
       <section className="accounts-section">
         <h3>Mes comptes</h3>
         <div className="accounts-list">
-          {accounts.map((account) => (
+          {activeAccounts.map((account) => (
             <div
               key={account.id}
               className={`account-card ${
                 account.type === "Compte courant" ? "current-account" : ""
               }`}
             >
-              <div onClick={() => handleNavigation("/Login")}>
+              <div onClick={() => handleNavigation("/account", account)}>
                 <h4>{account.type}</h4>
                 <p>Solde : {account.balance.toFixed(2)} €</p>
                 <p>RIB : {account.rib}</p>
+                <p>Date ouverture : {new Date(account.date).toLocaleString()}</p>
               </div>
 
               <div className="quick-actions">
@@ -112,8 +123,8 @@ export default function Home() {
         isOpen={isPopupOpen}
         onClose={closePopup}
         title="Ouvrir un nouveau compte"
-        accountTypes={ACCOUNT_TYPES}
-        existingAccounts={accounts}
+        accountTypes={availableAccountTypes} // <-- on ne propose que les types libres
+        existingAccounts={activeAccounts}    // <-- seulement les comptes actifs
       />
 
       <footer className="home-footer">
