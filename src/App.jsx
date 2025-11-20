@@ -4,7 +4,7 @@ import Home from "./pages/Home/Home";
 import Account from "./pages/Account/Account";
 import Historique from "./pages/Historique/Historique";
 import Beneficiary from "./pages/Beneficiary/Beneficiary";
-import Signing from "./pages/Signin/Signin";
+import Signing from "./pages/SignIn/SignIn";
 import Login from "./pages/Login/Login";
 import Deposit from "./pages/Deposit/Deposit";
 import Transfert from "./pages/Transfert/Transfert";

@@ -21,6 +21,8 @@ export default function Signing() {
             return;
         }
 
+
+
         try {
             const response = await axios.post("http://127.0.0.1:8000/users/", {
                 name,
@@ -38,8 +40,14 @@ export default function Signing() {
 
             navigate("/");
         } catch (err) {
-            if (err.response) {
-                setError(err.response.data.detail || "Erreur lors de l'inscription");
+            if (err.response && err.response.data && err.response.data.detail) {
+                const detail = err.response.data.detail;
+
+                if (Array.isArray(detail)) {
+                    setError(detail.map(d => d.msg).join(", "));
+                } else {
+                    setError(detail);
+                }
             } else {
                 setError("Erreur réseau ou serveur indisponible");
             }
@@ -63,6 +71,8 @@ export default function Signing() {
 
                         <button onClick={handleSubmit}> S'inscrire</button>
                         <button onClick={() => navigate("/Login")}> J'ai déja un compte</button>
+
+                        {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
                 </div>
             </div>

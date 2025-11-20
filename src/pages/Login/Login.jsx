@@ -33,11 +33,21 @@ export default function Login() {
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
             localStorage.setItem("user", JSON.stringify(userResponse.data));
 
-            navigate("/"); 
+            navigate("/");
             window.location.reload(); // force Header update
 
         } catch (err) {
-            setError(err.response?.data?.detail || "Erreur lors de la connexion");
+            if (err.response && err.response.data && err.response.data.detail) {
+                const detail = err.response.data.detail;
+
+                if (Array.isArray(detail)) {
+                    setError(detail.map(d => d.msg).join(", "));
+                } else {
+                    setError(detail);
+                }
+            } else {
+                setError("Erreur lors de la connexion");
+            }
         }
     };
 
