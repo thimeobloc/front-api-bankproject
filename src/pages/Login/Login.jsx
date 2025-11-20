@@ -33,7 +33,7 @@ export default function Login() {
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
             localStorage.setItem("user", JSON.stringify(userResponse.data));
 
-            navigate("/"); 
+            navigate("/");
             window.location.reload(); // force Header update
 
         } catch (err) {
