@@ -23,19 +23,25 @@ export default function BeneficiaryModal({isOpen, onClose, title, paragraphe, ac
                 return;
             }
 
-            const url = `http://127.0.0.1:8000/accounts/beneficiary/${accountId}/${rib}/${name}`;
+            if (!rib || !name) {
+                setError("RIB et nom sont requis");
+                return;
+            }
 
-            console.log("POST →", url);
-
-            await axios.post(url, {}, {
+            await axios.post(`http://127.0.0.1:8000/accounts/beneficiary/${accountId}`, 
+                { rib, name }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            alert("Nouveau compte créé !");
+            alert("Nouveau bénéficiaire enregistré !");
             window.location.reload();
         } catch (err) {
             console.log(err);
-            setError("Erreur lors de la création du bénéficiaire");
+            if (err.response && err.response.data && err.response.data.detail) {
+                setError(err.response.data.detail);
+            } else {
+                setError("Erreur lors de la création du bénéficiaire");
+            }
         }
     };
 

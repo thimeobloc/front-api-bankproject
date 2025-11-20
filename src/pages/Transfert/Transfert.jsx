@@ -17,28 +17,37 @@ export default function Transfert() {
     const [account, setAccounts] = useState([]);
 
     useEffect(() => {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) setUser(JSON.parse(savedUser));
+        const fetchData = async () => {
+            const savedUser = localStorage.getItem("user");
+            if (savedUser) setUser(JSON.parse(savedUser));
 
-        if (!token) return;
+            if (!token) return;
 
-        axios.get("http://127.0.0.1:8000/accounts/", {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-            .then((res) => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/accounts/", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setAccounts(res.data);
 
-                // Compte principal
                 const mainAccount = res.data.find((b) => b.main);
-                if (mainAccount) {
-                    axios.get(`http://127.0.0.1:8000/accounts/${mainAccount.id}/beneficiaries`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    })
-                        .then((res2) => setBeneficiaries(res2.data))
-                        .catch((err) => console.error("Erreur bénéficiaires :", err));
+                console.log("Main account :", mainAccount);
+                if (!mainAccount) return;
+
+                const res2 = await axios.get(`http://127.0.0.1:8000/accounts/beneficiary/${mainAccount.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setBeneficiaries(res2.data);
+                console.log("Beneficiaries :", res2.data);
+            } catch (err) {
+                if (err.response) {
+                    console.error("Erreur bénéficiaires, réponse serveur :", err.response.data);
+                } else {
+                    console.error("Erreur bénéficiaires :", err.message);
                 }
-            })
-            .catch((err) => console.error("Erreur de chargement des comptes :", err));
+            }
+        };
+
+        fetchData();
     }, [token]);
 
     if (!user) {
@@ -50,17 +59,15 @@ export default function Transfert() {
         );
     }
     const appearSecond = () => {
-        const to =Array.from(document.getElementsByClassName("to"))
-            .map(el => el.id);
-        setIsSecondOpen(to);
+        setIsSecondOpen(true);
     }
     const openPopup = () => { setIsPopupOpen(true);};
     const closePopup = () => { setIsPopupOpen(false);};
     const main_account = account.find((b) => b.main);
     const current_account = main_account ? main_account.id : null;
 
-    const filteredBeneficiaries = beneficiairies.filter((b) =>
-        b.inputName.toLowerCase().includes(query.toLowerCase())
+    const filteredBeneficiaries = beneficiaries.filter((b) =>
+        b.name.toLowerCase().includes(query.toLowerCase())
     );
     return(
         <section>
@@ -70,13 +77,15 @@ export default function Transfert() {
                     <div className="list">
                         <h2>Depuis ...</h2>
                         {account.map((b) => (
-                            <BeneficiaryCard  onClick={() => appearSecond()}
-                                key={b.id}
+                            <>
+                            <div key={b.id} onClick={() => appearSecond()}>
+                            <BeneficiaryCard  
                                 name={b.type}
                                 iban={b.rib}
                                 imgUrl={b.img}
                             >
                             </BeneficiaryCard>
+                            </div></>
                         ))}
                     </div>
                 </div>
@@ -95,11 +104,11 @@ export default function Transfert() {
                                     />
                                 ))}
                                 <h3>Vos Bénéficiaires</h3>
-                                {beneficiairies.map((b) => (
+                                {beneficiaries.map((b) => (
                                     <BeneficiaryCard
                                         key={b.id}
-                                        name={b.inputName}
-                                        iban={b.iban}
+                                        name={b.name}
+                                        iban={b.rib}
                                         imgUrl={b.img}
                                     />
                                 ))}
@@ -111,8 +120,8 @@ export default function Transfert() {
 
                                     <BeneficiaryCard
                                         key={b.id}
-                                        name={b.inputName}
-                                        iban={b.iban}
+                                        name={b.name}
+                                        iban={b.rib}
                                         imgUrl={b.img}
                                     />
 
