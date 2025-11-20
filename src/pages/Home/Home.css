@@ -98,10 +98,13 @@ body {
 .account-card {
   background: var(--card-bg);
   padding: 25px;
-  border-radius: 15px;
-  width: 350px; /* plus large pour PC */
+  border-radius: 15px; /* angles arrondis */
+  width: calc(33.33% - 20px); /* 3 comptes par ligne */
+  min-width: 250px; /* limite la taille minimale */
   text-align: center;
   transition: transform 0.2s, background 0.2s;
+  border: 2px solid rgba(255, 255, 255, 0.5); /* cadre visible */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* effet léger */
 }
 
 .account-card:hover {
@@ -156,7 +159,9 @@ body {
   color: rgba(255, 255, 255, 0.8);
 }
 
-
+/* -----------------------------
+   WELCOME SECTION
+------------------------------ */
 .welcome-section {
   text-align: center;
   margin-top: 100px;
@@ -189,10 +194,15 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-
 /* -----------------------------
    MEDIA QUERIES (responsive)
 ------------------------------ */
+@media (max-width: 1024px) {
+  .account-card {
+    width: calc(50% - 20px); /* 2 comptes par ligne */
+  }
+}
+
 @media (max-width: 768px) {
   .account-card {
     width: 90%; /* Full width sur mobile */
@@ -204,5 +214,3 @@ body {
     align-items: center;
   }
 }
-
-

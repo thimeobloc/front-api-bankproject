@@ -11,6 +11,16 @@ export default function Home() {
   const token = Cookies.get("access_token");
   const [accounts, setAccounts] = useState([]);
 
+  // Liste des types de comptes épargne autorisés
+  const ACCOUNT_TYPES = [
+    "Livret A",
+    "LDDS",
+    "Livret Jeune",
+    "PEL",
+    "Compte à terme",
+    "Assurance-vie"
+  ];
+
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) setUser(JSON.parse(savedUser));
@@ -39,11 +49,11 @@ export default function Home() {
       </div>
     );
   }
+
   const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+  const openPopup = () => setIsPopupOpen(true);
+  const closePopup = () => setIsPopupOpen(false);
 
-  const openPopup = () => { setIsPopupOpen(true);};
-
-  const closePopup = () => { setIsPopupOpen(false);};
   return (
     <section className="home-container">
       <div className="home-header">
@@ -51,16 +61,16 @@ export default function Home() {
         <p>Connecté avec : {user.email}</p>
       </div>
 
-          {/* Menu */}
-          <nav className="navbar">
-            <ul>
-              <li>Compte principal</li>
-              <li>Épargne</li>
-              <li ><a onClick={() => openPopup()}> Nouveau compte </a></li>
-              <li>Historique</li>
-              <li>Infos personnelles</li>
-            </ul>
-          </nav>
+      {/* Menu */}
+      <nav className="navbar">
+        <ul>
+          <li>Compte principal</li>
+          <li>Épargne</li>
+          <li><a onClick={openPopup}>Nouveau compte</a></li>
+          <li>Historique</li>
+          <li>Infos personnelles</li>
+        </ul>
+      </nav>
 
       <section className="balance-section">
         <h2>Solde total : {totalBalance.toFixed(2)} €</h2>
@@ -69,23 +79,28 @@ export default function Home() {
       <section className="accounts-section">
         <h3>Mes comptes</h3>
         <div className="accounts-list">
-          {accounts.map(account => (
-            <div key={account.id} className={`account-card ${account.type || ""}`}>
-              <h4>Compte #{account.id}</h4>
-              <p>Solde : {account.balance.toFixed(2)} €</p>
-              <p>RIB : {account.rib}</p>
-              <div className="quick-actions">
-                <button>Virement</button>
-                <button>RIB</button>
-              </div>
+        {accounts.map(account => (
+          <div key={account.id} className={`account-card ${account.type || ""}`}>
+            <h4>{account.type}</h4>
+            <p>Solde : {account.balance.toFixed(2)} €</p>
+            <p>RIB : {account.rib}</p>
+            <div className="quick-actions">
+              <button>Virement</button>
+              <button>RIB</button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
       </section>
-        <OpenAccountModal isOpen={isPopupOpen} onClose={closePopup}
-            title = "Ouvrir un nouveau compte"
-          >
-        </OpenAccountModal>
+
+      {/* Modal pour ouverture de compte */}
+      <OpenAccountModal 
+        isOpen={isPopupOpen} 
+        onClose={closePopup} 
+        title="Ouvrir un nouveau compte"
+        accountTypes={ACCOUNT_TYPES} // On passe la liste des types à la modal
+      />
+
       <footer className="home-footer">
         <p>© 2025 Votre Banque — Tous droits réservés</p>
       </footer>
