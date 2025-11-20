@@ -24,7 +24,6 @@ export default function OpenAccountModal({ isOpen, onClose, children, title, par
                     },
                 }
             );
-            console.log(response);
             alert("Nouveau compte créé !");
             onClose();
         } catch (err) {
