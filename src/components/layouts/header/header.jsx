@@ -6,15 +6,31 @@ export default function Header() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
+    // Log de récupération du user depuis localStorage
     useEffect(() => {
+        console.log("[Header] Récupération du user depuis localStorage...");
         const savedUser = localStorage.getItem("user");
-        if (savedUser) setUser(JSON.parse(savedUser));
+        if (savedUser) {
+            const parsedUser = JSON.parse(savedUser);
+            setUser(parsedUser);
+            console.log("[Header] User récupéré :", parsedUser);
+        } else {
+            console.log("[Header] Aucun user trouvé dans localStorage");
+        }
     }, []);
 
     const handleLogout = () => {
+        console.log("[Header] Déconnexion en cours...");
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        console.log("[Header] localStorage vidé, navigation vers /Login");
         navigate("/Login");
-        window.location.reload(); // force re-render Header
+        window.location.reload();
+    };
+
+    const handleNavigation = (path) => {
+        console.log(`[Header] Navigation vers ${path}`);
+        navigate(path);
     };
 
     return (
@@ -23,7 +39,7 @@ export default function Header() {
                 <div>
                     <img
                         className="logo"
-                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F021%2F944%2F628%2Fnon_2x%2Fbank-logo-or-icon-design-on-white-background-illustration-vector.jpg&f=1&nofb=1&ipt=c79ede7cb03fb488fcb9f65204cf068879e36c82b92697ceec5f2c14e5bfd66a"
+                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F021%2F944%2F628%2Fnon_2x%2Fbank-logo-or-icon-design-on-white-background-illustration-vector.jpg&f=1&nofb=1"
                         alt="Logo"
                     />
                 </div>
@@ -35,16 +51,16 @@ export default function Header() {
                         <ul>
                             {!user ? (
                                 <>
-                                    <li><a onClick={() => navigate("/")}>Accueil</a></li>
-                                    <li><a onClick={() => navigate("/Login")}>Se connecter</a></li>
-                                    <li><a onClick={() => navigate("/Signing")}>S'inscrire</a></li>
+                                    <li><a onClick={() => handleNavigation("/")}>Accueil</a></li>
+                                    <li><a onClick={() => handleNavigation("/Login")}>Se connecter</a></li>
+                                    <li><a onClick={() => handleNavigation("/Signing")}>S'inscrire</a></li>
                                 </>
                             ) : (
                                 <>
                                     <li>Connecté en tant que : <b>{user.name}</b></li>
-                                    <li><a onClick={() => navigate("/")}>Accueil</a></li>
-                                    <li><a onClick={() => navigate("/Deposit")}>Dépôt</a></li>
-                                    <li><a onClick={() => navigate("/Transfert")}>Transfert</a></li>
+                                    <li><a onClick={() => handleNavigation("/")}>Accueil</a></li>
+                                    <li><a onClick={() => handleNavigation("/Deposit")}>Dépôt</a></li>
+                                    <li><a onClick={() => handleNavigation("/Transfert")}>Transfert</a></li>
                                     <li><a onClick={handleLogout}>Déconnexion</a></li>
                                 </>
                             )}
