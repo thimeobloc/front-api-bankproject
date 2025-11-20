@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import './Home.css';
+import "./Home.css";
 import "../../../src/pages/Beneficiary/Beneficiary.css";
-import OpenAccountModal from "../../../src/components/home/OpenAccountModal"
+import OpenAccountModal from "../../../src/components/home/OpenAccountModal";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -10,22 +11,27 @@ export default function Home() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const token = Cookies.get("access_token");
   const [accounts, setAccounts] = useState([]);
+  const navigate = useNavigate();
 
-  // Liste des types de comptes épargne autorisés
+  const handleNavigation = (path) => {
+    console.log(`[Header] Navigation vers ${path}`);
+    navigate(path);
+  };
+
   const ACCOUNT_TYPES = [
     "Livret A",
     "LDDS",
     "Livret Jeune",
     "PEL",
     "Compte à terme",
-    "Assurance-vie"
+    "Assurance-vie",
   ];
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) setUser(JSON.parse(savedUser));
 
-    if (!token) return; 
+    if (!token) return;
 
     axios
       .get("http://127.0.0.1:8000/accounts/", {
@@ -61,12 +67,13 @@ export default function Home() {
         <p>Connecté avec : {user.email}</p>
       </div>
 
-      {/* Menu */}
       <nav className="navbar">
         <ul>
           <li>Compte principal</li>
           <li>Épargne</li>
-          <li><a onClick={openPopup}>Nouveau compte</a></li>
+          <li>
+            <a onClick={openPopup}>Nouveau compte</a>
+          </li>
           <li>Historique</li>
           <li>Infos personnelles</li>
         </ul>
@@ -79,26 +86,34 @@ export default function Home() {
       <section className="accounts-section">
         <h3>Mes comptes</h3>
         <div className="accounts-list">
-        {accounts.map(account => (
-          <div key={account.id} className={`account-card ${account.type || ""}`}>
-            <h4>{account.type}</h4>
-            <p>Solde : {account.balance.toFixed(2)} €</p>
-            <p>RIB : {account.rib}</p>
-            <div className="quick-actions">
-              <button>Virement</button>
-              <button>RIB</button>
+          {accounts.map((account) => (
+            <div
+              key={account.id}
+              className={`account-card ${
+                account.type === "Compte courant" ? "current-account" : ""
+              }`}
+            >
+              <div onClick={() => handleNavigation("/Login")}>
+                <h4>{account.type}</h4>
+                <p>Solde : {account.balance.toFixed(2)} €</p>
+                <p>RIB : {account.rib}</p>
+              </div>
+
+              <div className="quick-actions">
+                <button>Virement</button>
+                <button onClick={openPopup}>RIB</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </section>
 
-      {/* Modal pour ouverture de compte */}
-      <OpenAccountModal 
-        isOpen={isPopupOpen} 
-        onClose={closePopup} 
+      <OpenAccountModal
+        isOpen={isPopupOpen}
+        onClose={closePopup}
         title="Ouvrir un nouveau compte"
-        accountTypes={ACCOUNT_TYPES} // On passe la liste des types à la modal
+        accountTypes={ACCOUNT_TYPES}
+        existingAccounts={accounts}
       />
 
       <footer className="home-footer">
