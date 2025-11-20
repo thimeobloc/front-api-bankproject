@@ -37,7 +37,17 @@ export default function Login() {
             window.location.reload(); // force Header update
 
         } catch (err) {
-            setError(err.response?.data?.detail || "Erreur lors de la connexion");
+            if (err.response && err.response.data && err.response.data.detail) {
+                const detail = err.response.data.detail;
+
+                if (Array.isArray(detail)) {
+                    setError(detail.map(d => d.msg).join(", "));
+                } else {
+                    setError(detail);
+                }
+            } else {
+                setError("Erreur lors de la connexion");
+            }
         }
     };
 
