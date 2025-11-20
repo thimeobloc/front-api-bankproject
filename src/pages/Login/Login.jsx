@@ -34,7 +34,7 @@ export default function Login() {
             localStorage.setItem("user", JSON.stringify(userResponse.data));
 
             navigate("/"); 
-            window.location.reload(); // force Header update
+            window.location.reload();
 
         } catch (err) {
             setError(err.response?.data?.detail || "Erreur lors de la connexion");
@@ -65,7 +65,6 @@ export default function Login() {
 
                     <button onClick={loginSuccess}>Se connecter</button>
                     <button onClick={() => navigate("/Signing")}>Je n'ai pas de compte</button>
-
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
             </div>
