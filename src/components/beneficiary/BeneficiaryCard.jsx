@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function BeneficiaryList({name, iban, imgUrl}) {
+export default function BeneficiaryCard({name, iban, imgUrl}) {
   return (
     <div className="listElement">
         <img src={imgUrl} alt="Image of the account" />
