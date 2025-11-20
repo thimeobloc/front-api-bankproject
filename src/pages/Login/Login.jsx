@@ -4,7 +4,9 @@ import "../../../src/pages/Beneficiary/Beneficiary.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import * as jwtDecode from "jwt-decode"; // Compatible Vite
+import { jwtDecode } from "jwt-decode";
+
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -25,7 +27,7 @@ export default function Login() {
             const token = response.data.access_token;
             Cookies.set("token", token, { expires: 1 });
 
-            const decoded = jwtDecode.default(token);
+            const decoded = jwtDecode(token);
             const userId = decoded.user_id;
 
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
