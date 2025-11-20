@@ -29,7 +29,7 @@ export default function Signing() {
       });
 
         Cookies.set("access_token", response.data.access_token)
-        Cookies.set("user_id", response.data.id)
+        Cookies.set("user_id", response.data.user.id);
       navigate("/");
     } catch (err) {
       if (err.response) {

@@ -10,9 +10,8 @@ export default function OpenAccountModal({ isOpen, onClose, children, title, par
         e.preventDefault();
         setError("");
         try {
-            const userId = Cookies.get("user_id");
-            if (!userId) {
-                console.log("OUHOU")
+            const token = Cookies.get("access_token");
+            if (!token) {
                 setError("Utilisateur non connecté.");
                 return;
             }
@@ -25,7 +24,7 @@ export default function OpenAccountModal({ isOpen, onClose, children, title, par
                     },
                 }
             );
-            console.log("bloup")
+            console.log(response);
             alert("Nouveau compte créé !");
             onClose();
         } catch (err) {
