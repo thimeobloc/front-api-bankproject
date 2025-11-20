@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import "../../../src/pages/Beneficiary/Beneficiary.css";
-import OpenAccountModal from "../../../src/components/home/OpenAccountModal";
+import OpenAccountModal from "../../components/home/OpenAccountModalSpec";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";

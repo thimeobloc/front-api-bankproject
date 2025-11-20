@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import BeneficiaryCard from "../../components/beneficiary/BeneficiaryCard.jsx";
 import BeneficiaryModal from "../../components/beneficiary/benificiaryModal.jsx";
+import TransferModal from "../../components/transfer/TransferModalSpec.jsx";
 import "../../pages/Beneficiary/Beneficiary.css"
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -16,6 +17,8 @@ export default function Transfert() {
     const token = Cookies.get("access_token");
     const [account, setAccounts] = useState([]);
 
+    const [selectedAccountId, setSelectedAccountId] = useState(null);
+    const [selectedBeneficiaryRib, setSelectedBeneficiaryRib] = useState(null);
     useEffect(() => {
         const fetchData = async () => {
             const savedUser = localStorage.getItem("user");
@@ -78,7 +81,7 @@ export default function Transfert() {
                         <h2>Depuis ...</h2>
                         {account.map((b) => (
                             <>
-                            <div key={b.id} onClick={() => appearSecond()}>
+                            <div key={b.id} onClick={() => {setSelectedAccountId(b.id); appearSecond()}}>
                             <BeneficiaryCard  
                                 name={b.type}
                                 iban={b.rib}
@@ -138,6 +141,13 @@ export default function Transfert() {
                 onClose={closePopup}
                 accountId={current_account}
                 title="Ajouter un Bénéficiaire"
+            />
+
+            <TransferModal
+                isOpen={isPopupOpen}
+                onClose={closePopup}
+                accountId={current_account}
+                title={selectedAccountId + selectedBeneficiaryRib}
             />
         </section>
     )
