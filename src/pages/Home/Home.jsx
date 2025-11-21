@@ -88,14 +88,12 @@ export default function Home() {
 
       <nav className="navbar">
         <ul>
-          <li>Compte principal</li>
           <li>
             <a onClick={openPopup}>Nouveau compte</a>
           </li>
           <li onClick={() => handleNavigation("/historique")} style={{ cursor: "pointer" }}>
             Historique
-            </li>
-          <li>Infos personnelles</li>
+          </li>
         </ul>
       </nav>
 
@@ -119,9 +117,7 @@ export default function Home() {
                 <p>RIB : {account.rib}</p>
                 <p>Date ouverture : {new Date(account.date).toLocaleString()}</p>
               </div>
-
               <div className="quick-actions">
-                <button>Virement</button>
                 <button onClick={() => openRibModal(account.rib)}>RIB</button>
               </div>
             </div>

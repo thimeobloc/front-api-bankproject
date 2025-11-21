@@ -6,7 +6,6 @@ html, body {
 
 html {
     min-height: 100vh;
-
     background: linear-gradient(45deg, #0e5328, #095277);
     background-repeat: no-repeat;
     background-size: cover;
@@ -14,3 +13,16 @@ html {
     overflow-x: hidden;
 }
 
+/* Décalage pour header fixe */
+main {
+    padding-top: 70px; /* espace juste pour le header */
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+/* Ajustement responsive pour mobile si le header change de taille */
+@media (max-width: 950px) {
+    main {
+        padding-top: 60px;
+    }
+}

@@ -14,16 +14,18 @@ export default function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/account/:id" element={<Account />} />
-        <Route path="/Signing" element={<Signing />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/beneficiary" element={<Beneficiary />} />
-        <Route path="/deposit" element={<Deposit />} />
-        <Route path="/transfert" element={<Transfert />} />
-        <Route path="/historique" element={<Historique />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/account/:id" element={<Account />} />
+          <Route path="/Signing" element={<Signing />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/beneficiary" element={<Beneficiary />} />
+          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/transfert" element={<Transfert />} />
+          <Route path="/historique" element={<Historique />} />
+        </Routes>
+      </main>
     </>
   )
 }

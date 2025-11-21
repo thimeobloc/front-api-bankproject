@@ -20,6 +20,7 @@ export default function Transfert() {
 
     const [selectedAccountId, setSelectedAccountId] = useState(null);
     const [selectedBeneficiaryRib, setSelectedBeneficiaryRib] = useState(null);
+
     useEffect(() => {
         const fetchData = async () => {
             const savedUser = localStorage.getItem("user");
@@ -154,6 +155,7 @@ export default function Transfert() {
                 rib={selectedBeneficiaryRib}
                 title={"Faire un nouveau virement"}
             />
+
         </section>
     )
 }
