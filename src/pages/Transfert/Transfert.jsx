@@ -1,51 +1,55 @@
 import React, {useEffect, useState} from 'react';
 import BeneficiaryCard from "../../components/beneficiary/BeneficiaryCard.jsx";
+import BeneficiaryModal from "../../components/beneficiary/benificiaryModal.jsx";
+import TransferModal from "../../components/transfer/TransferModalSpec.jsx";
 import "../../pages/Beneficiary/Beneficiary.css"
 import Cookies from "js-cookie";
 import axios from "axios";
 import SearchBar from "../../components/beneficiary/SearchBar.jsx";
 
 export default function Transfert() {
-    /***const [isPopupOpen, setIsPopupOpen] = useState(false);**/
+    const [beneficiaries, setBeneficiaries] = useState([]);
     const [isSecondOpen, setIsSecondOpen] = useState(false);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isPopupOpen2, setIsPopupOpen2] = useState(false);
 
-    const beneficiairies = [
-        { id: 1, inputName: "Alice Dupont", iban: "FR76 1000 2000 3000 400167890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 2, inputName: "Jean Martin", iban: "FR76 1000 2000 3000 400267890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 3, inputName: "Sophie Bernard", iban: "FR76 1000 2000 3000 400367890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 4, inputName: "Lucas Leroy", iban: "FR76 1000 2000 3000 400467890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 5, inputName: "Chloé Moreau", iban: "FR76 1000 2000 3000 400567890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 6, inputName: "Hugo Lefevre", iban: "FR76 1000 2000 3000 400667890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 7, inputName: "Emma Dubois", iban: "FR76 1000 2000 3000 400767890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 8, inputName: "Louis Mercier", iban: "FR76 1000 2000 3000 400867890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa"},
-        { id: 9, inputName: "Clara Fontaine", iban: "FR76 1000 2000 3000 400967890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" },
-        { id: 10, inputName: "Maxime Roux", iban: "FR76 1000 2000 3000 401067890", img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2022%2F08%2F06%2F11%2F02%2Fblack-man-7368411_960_720.jpg&f=1&nofb=1&ipt=47eb413fb8d7d3f008c8e3e64ec69dff79d01ad00da9bd58a554cb28ab4a88aa" }
-    ];
     const [query, setQuery] = useState("");
     const [user, setUser] = useState(null);
     const token = Cookies.get("access_token");
     const [account, setAccounts] = useState([]);
-    const filteredBeneficiaries = beneficiairies.filter((b) =>
-        b.inputName.toLowerCase().includes(query.toLowerCase())
-    );
+
+    const [selectedAccountId, setSelectedAccountId] = useState(null);
+    const [selectedBeneficiaryRib, setSelectedBeneficiaryRib] = useState(null);
     useEffect(() => {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) setUser(JSON.parse(savedUser));
+        const fetchData = async () => {
+            const savedUser = localStorage.getItem("user");
+            if (savedUser) setUser(JSON.parse(savedUser));
 
-        if (!token) return;
+            if (!token) return;
 
-        axios
-            .get("http://127.0.0.1:8000/accounts/", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((res) => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/accounts/", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setAccounts(res.data);
-            })
-            .catch((err) => {
-                console.error("Erreur de chargement des comptes :", err);
-            });
+
+                const mainAccount = res.data.find((b) => b.main);
+                if (!mainAccount) return;
+
+                const res2 = await axios.get(`http://127.0.0.1:8000/accounts/beneficiary/${mainAccount.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setBeneficiaries(res2.data);
+            } catch (err) {
+                if (err.response) {
+                    console.error("Erreur bénéficiaires, réponse serveur :", err.response.data);
+                } else {
+                    console.error("Erreur bénéficiaires :", err.message);
+                }
+            }
+        };
+
+        fetchData();
     }, [token]);
 
     if (!user) {
@@ -57,12 +61,18 @@ export default function Transfert() {
         );
     }
     const appearSecond = () => {
-        const to =Array.from(document.getElementsByClassName("to"))
-            .map(el => el.id);
-        setIsSecondOpen(to);
+        setIsSecondOpen(true);
     }
-    /***const openPopup = () => { setIsPopupOpen(true);};
-    const closePopup = () => { setIsPopupOpen(false);};**/
+    const openPopup = () => { setIsPopupOpen(true);};
+    const closePopup = () => { setIsPopupOpen(false);};
+    const openPopup2 = () => { setIsPopupOpen2(true);};
+    const closePopup2 = () => { setIsPopupOpen2(false);};
+    const main_account = account.find((b) => b.main);
+    const current_account = main_account ? main_account.id : null;
+
+    const filteredBeneficiaries = beneficiaries.filter((b) =>
+        b.name.toLowerCase().includes(query.toLowerCase())
+    );
     return(
         <section>
             <div className="center">
@@ -71,14 +81,12 @@ export default function Transfert() {
                     <div className="list">
                         <h2>Depuis ...</h2>
                         {account.map((b) => (
-                            <BeneficiaryCard  onClick={() => appearSecond()}
-                                key={b.id}
+                            <BeneficiaryCard  
                                 name={b.type}
                                 iban={b.rib}
                                 imgUrl={b.img}
-                            >
-                                {console.log(b.beneficiary)}
-                            </BeneficiaryCard>
+                                onClick={() => {setSelectedAccountId(b.id);  appearSecond(); }}
+                            />
                         ))}
                     </div>
                 </div>
@@ -90,34 +98,32 @@ export default function Transfert() {
                                 <h3>Vos comptes</h3>
                                 {account.map((b) => (
                                     <BeneficiaryCard
-                                        key={b.id}
                                         name={b.type}
                                         iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
                                 ))}
                                 <h3>Vos Bénéficiaires</h3>
-                                {beneficiairies.map((b) => (
+                                {beneficiaries.map((b) => (
                                     <BeneficiaryCard
-                                        key={b.id}
-                                        name={b.inputName}
-                                        iban={b.iban}
+                                        name={b.name}
+                                        iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
-                                ))}
+                                ))}       
                             </>
                         ) : (
                             <>
                                 <h2>Vous recherchez : "{query}" ...</h2>
                                 {filteredBeneficiaries.map((b) => (
-
                                     <BeneficiaryCard
-                                        key={b.id}
-                                        name={b.inputName}
-                                        iban={b.iban}
+                                        name={b.name}
+                                        iban={b.rib}
                                         imgUrl={b.img}
+                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
-
                                 ))}
                             </>
                         )
@@ -125,7 +131,21 @@ export default function Transfert() {
                     </div>
                 </div>
             </div>
-            <button className ="fixed_button">Ajouter un IBAN</button>
+            <button className ="fixed_button" onClick={openPopup}>Ajouter un IBAN</button>
+            <BeneficiaryModal
+                isOpen={isPopupOpen}
+                onClose={closePopup}
+                accountId={current_account}
+                title="Ajouter un Bénéficiaire"
+            />
+
+            <TransferModal
+                isOpen={isPopupOpen2}
+                onClose={closePopup2}
+                accountId={selectedAccountId}
+                rib={selectedBeneficiaryRib}
+                title={"Faire un nouveau virement"}
+            />
         </section>
     )
 }

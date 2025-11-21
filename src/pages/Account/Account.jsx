@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Account.css";
 import Cookies from "js-cookie";
+
+import AccountInfo from "../../components/account/AccountInfo";
+import TransactionsTable from "../../components/account/TransactionsTable";
+import DepositModal from "../../components/account/DepositModal";
+import WithdrawModal from "../../components/account/WithdrawModal";
+import CloseAccountModal from "../../components/account/CloseAccountModal";
 
 export default function Account() {
   const navigate = useNavigate();
+
   const [account, setAccount] = useState(null);
+  const [userName, setUserName] = useState("");
   const [filter, setFilter] = useState("Tous");
   const [transactions, setTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
@@ -15,46 +22,82 @@ export default function Account() {
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [showCloseModal, setShowCloseModal] = useState(false);
 
+  // Récupérer le compte sélectionné depuis le localStorage
   useEffect(() => {
     const savedAccount = localStorage.getItem("selectedAccount");
     if (savedAccount) setAccount(JSON.parse(savedAccount));
   }, []);
 
+  // Rafraîchir le compte depuis le serveur
+  const refreshAccount = async () => {
+    if (!account) return;
+    try {
+      const token = Cookies.get("access_token");
+      const res = await fetch(`http://localhost:8000/accounts/${account.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setAccount(data);
+      localStorage.setItem("selectedAccount", JSON.stringify(data));
+    } catch (error) {
+      console.error("Erreur lors du rafraîchissement :", error);
+    }
+  };
+
+  // Récupérer le nom de l'utilisateur
   useEffect(() => {
-    if (account) fetchTransactions();
+    if (!account) return;
+
+    const fetchUser = async () => {
+      try {
+        const token = Cookies.get("access_token");
+        const res = await fetch(`http://localhost:8000/users/${account.user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          setUserName("John Doe");
+          return;
+        }
+        const data = await res.json();
+        setUserName(data.name);
+      } catch {
+        setUserName("John Doe");
+      }
+    };
+
+    fetchUser();
   }, [account]);
 
-  useEffect(() => {
-    if (filter === "Tous") setFilteredTransactions(transactions);
-    else setFilteredTransactions(transactions.filter((tx) => tx.type === filter));
-  }, [filter, transactions]);
-
+  // Récupérer les transactions du compte
   const fetchTransactions = async () => {
+    if (!account) return;
     try {
       const token = Cookies.get("access_token");
 
       const depositsRes = await fetch(`http://localhost:8000/balances/deposits/${account.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const deposits = await depositsRes.json();
+      const deposits = (await depositsRes.json()) || [];
 
       const withdrawsRes = await fetch(`http://localhost:8000/balances/withdraws/${account.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const withdraws = await withdrawsRes.json();
+      const withdraws = (await withdrawsRes.json()) || [];
 
-      const transfersRes = await fetch(`http://localhost:8000/balances/transfers`, {
+      let transfersRes = await fetch(`http://localhost:8000/balances/transfers`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      let transfers = await transfersRes.json();
+      let transfers = (await transfersRes.json()) || [];
+
       transfers = transfers.filter(
-        (t) => t.from_account_id === account.id || t.to_account_id === account.id
+        t => t.from_account_id === account.id || t.to_account_id === account.id
       );
 
-      const allTransactions = [
-        ...deposits.map((d) => ({ id: d.id, type: "Dépôt", amount: d.amount, date: d.date })),
-        ...withdraws.map((w) => ({ id: w.id, type: "Retrait", amount: w.amount, date: w.date })),
-        ...transfers.map((t) => ({
+      const all = [
+        ...deposits.map(d => ({ id: d.id, type: "Dépôt", amount: d.amount, date: d.date })),
+        ...withdraws.map(w => ({ id: w.id, type: "Retrait", amount: w.amount, date: w.date })),
+        ...transfers.map(t => ({
           id: t.id,
           type: "Transfert",
           amount: t.amount,
@@ -63,180 +106,85 @@ export default function Account() {
         })),
       ];
 
-      allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setTransactions(allTransactions);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des transactions :", error);
+      all.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      setTransactions(all);
+    } catch (err) {
+      console.error(err);
+      setTransactions([]);
     }
   };
 
-  const handleDeposit = async () => {
-    if (!depositAmount || isNaN(depositAmount) || Number(depositAmount) <= 0) return;
-    try {
-      const token = Cookies.get("access_token");
-      const response = await fetch("http://localhost:8000/balances/deposit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ user_id: account.user_id, account_id: account.id, amount: Number(depositAmount) }),
-      });
-      if (!response.ok) return;
-      const data = await response.json();
-      setAccount({ ...account, balance: data.new_balance });
-      setDepositAmount("");
-      setShowDepositModal(false);
-      fetchTransactions();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // Mettre à jour les transactions filtrées
+  useEffect(() => {
+    if (filter === "Tous") setFilteredTransactions(transactions);
+    else setFilteredTransactions(transactions.filter(t => t.type === filter));
+  }, [filter, transactions]);
 
-  const handleWithdraw = async () => {
-    if (!withdrawAmount || isNaN(withdrawAmount) || Number(withdrawAmount) <= 0) return;
-    try {
-      const token = Cookies.get("access_token");
-      const response = await fetch("http://localhost:8000/balances/withdraw", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ user_id: account.user_id, account_id: account.id, amount: Number(withdrawAmount) }),
-      });
-      if (!response.ok) return;
-      const data = await response.json();
-      setAccount({ ...account, balance: data.new_balance });
-      setWithdrawAmount("");
-      setShowWithdrawModal(false);
-      fetchTransactions();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleCloseAccount = async () => {
-    try {
-      const token = Cookies.get("access_token");
-      const response = await fetch(`http://localhost:8000/accounts/close/${account.id}`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) return;
-      const data = await response.json();
-      setAccount({ ...account, closed: true, balance: 0 });
-      setShowCloseModal(false);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // Charger les transactions à chaque changement de compte
+  useEffect(() => {
+    if (account) fetchTransactions();
+  }, [account]);
 
   if (!account) {
     return (
       <div className="account-page">
         <h2>Aucun compte sélectionné</h2>
-        <button className="btn" onClick={() => navigate("/")}>Retour à l'accueil</button>
+        <button className="btn" onClick={() => navigate("/")}>
+          Retour
+        </button>
       </div>
     );
   }
 
-  const filterOptions = ["Tous", "Dépôt", "Retrait", "Transfert"];
-
   return (
     <section className="account-page two-columns">
-      <div className="account-info-column">
-        <h1>Infos du compte</h1>
-        <div className="account-info">
-          <p><strong>Type :</strong> {account.type}</p>
-          <p><strong>Solde :</strong> {account.balance.toFixed(2)} €</p>
-          <p><strong>RIB :</strong> {account.rib}</p>
-          <p><strong>Date de création :</strong> {new Date(account.date).toLocaleString()}</p>
-          <p><strong>Statut :</strong> {account.closed ? "Fermé" : "Actif"}</p>
-        </div>
+      <AccountInfo
+        key={account.id + account.balance}
+        account={account}
+        userName={userName}
+        transactions={transactions}
+        setShowDepositModal={setShowDepositModal}
+        setShowWithdrawModal={setShowWithdrawModal}
+        setShowCloseModal={setShowCloseModal}
+      />
 
-        <div className="account-buttons">
-          <button className="btn" onClick={() => navigate("/")}>Retour</button>
-          {!account.closed && <button className="btn danger" onClick={() => setShowCloseModal(true)}>Clôturer</button>}
-        </div>
+      <TransactionsTable
+        transactions={transactions}
+        filteredTransactions={filteredTransactions}
+        filter={filter}
+        setFilter={setFilter}
+      />
 
-        <div className="deposit-withdraw-buttons">
-          <button className="btn" onClick={() => setShowDepositModal(true)}>Dépôt</button>
-          <button className="btn" onClick={() => setShowWithdrawModal(true)}>Retrait</button>
-        </div>
-      </div>
-
-      <div className="transactions-column">
-        <h1>Historique des transactions</h1>
-        <div className="transaction-filter-buttons">
-          {filterOptions.map((option) => (
-            <button
-              key={option}
-              className={`btn filter-btn ${filter === option ? "active" : ""}`}
-              onClick={() => setFilter(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-
-        <table className="transactions-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Type</th>
-              <th>Montant (€)</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTransactions.map((tx) => (
-              <tr key={tx.id}>
-                <td>{tx.id}</td>
-                <td>{tx.type} {tx.direction ? `(${tx.direction})` : ""}</td>
-                <td>{tx.amount.toFixed(2)}</td>
-                <td>{new Date(tx.date).toLocaleString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal Dépôt */}
       {showDepositModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Dépôt</h2>
-            <input type="number" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} placeholder="Montant (€)" />
-            <div className="modal-actions">
-              <button className="btn" onClick={() => setShowDepositModal(false)}>Annuler</button>
-              <button className="btn" onClick={handleDeposit}>Confirmer</button>
-            </div>
-          </div>
-        </div>
+        <DepositModal
+          account={account}
+          depositAmount={depositAmount}
+          setDepositAmount={setDepositAmount}
+          setShowDepositModal={setShowDepositModal}
+          fetchTransactions={fetchTransactions}
+          refreshAccount={refreshAccount}
+        />
       )}
 
-      {/* Modal Retrait */}
       {showWithdrawModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Retrait</h2>
-            <input type="number" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} placeholder="Montant (€)" />
-            <div className="modal-actions">
-              <button className="btn" onClick={() => setShowWithdrawModal(false)}>Annuler</button>
-              <button className="btn" onClick={handleWithdraw}>Confirmer</button>
-            </div>
-          </div>
-        </div>
+        <WithdrawModal
+          account={account}
+          withdrawAmount={withdrawAmount}
+          setWithdrawAmount={setWithdrawAmount}
+          setShowWithdrawModal={setShowWithdrawModal}
+          fetchTransactions={fetchTransactions}
+          refreshAccount={refreshAccount}
+        />
       )}
 
-      {/* Modal Clôture */}
       {showCloseModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Clôturer le compte</h2>
-            <p>Le solde sera transféré au compte principal.</p>
-            <div className="modal-actions">
-              <button className="btn" onClick={() => setShowCloseModal(false)}>Annuler</button>
-              <button className="btn danger" onClick={handleCloseAccount}>Confirmer</button>
-            </div>
-          </div>
-        </div>
+        <CloseAccountModal
+          account={account}
+          setAccount={setAccount}
+          setShowCloseModal={setShowCloseModal}
+          refreshAccount={refreshAccount}
+        />
       )}
     </section>
   );
