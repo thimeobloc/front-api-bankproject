@@ -104,15 +104,23 @@ export default function Transfert() {
                                         onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
                                     />
                                 ))}
+
                                 <h3>Vos Bénéficiaires</h3>
-                                {beneficiaries.map((b) => (
-                                    <BeneficiaryCard
-                                        name={b.name}
-                                        iban={b.rib}
-                                        imgUrl={b.img}
-                                        onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
-                                    />
-                                ))}       
+
+                                {beneficiaries.length === 0 ? (
+                                    <p>Il n'y a pas de bénéficiaire.</p>
+                                ) : (
+                                    <>
+                                        {beneficiaries.map((b) => (
+                                            <BeneficiaryCard
+                                                name={b.name}
+                                                iban={b.rib}
+                                                imgUrl={b.img}
+                                                onClick={() => {setSelectedBeneficiaryRib(b.rib); openPopup2()}}
+                                            />
+                                        ))}
+                                    </>
+                                )}     
                             </>
                         ) : (
                             <>
