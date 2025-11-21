@@ -10,14 +10,14 @@ export default function AfficheModal({ transaction, onClose }) {
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1>Détails de la transaction</h1>
+        <h2>Détails de la transaction</h2>
 
-        <p>Bénéficiaire : {transaction.Beneficiaries}</p>
-        <p>Date : {transaction.Date}</p>
-        <p>Montant : {transaction.Solde}</p>
-        <p>Catégorie : {transaction.Categorie}</p>
-        <p>Description : Transaction effectuée sur votre compte.</p>
-        <p>IBAN : FR76 3000 4000 5000 6000 7000 800</p>
+        <p><strong>Bénéficiaire :</strong> {transaction.label}</p>
+        <p><strong>Date :</strong> {transaction.date}</p>
+        <p><strong>Montant :</strong> {transaction.amount}</p>
+        <p><strong>Catégorie :</strong> {transaction.category || "Générale"}</p>
+        <p><strong>Description :</strong> Transaction effectuée sur votre compte.</p>
+        <p><strong>IBAN :</strong> FR76 3000 4000 5000 6000 7000 800</p>
 
         <button className="modal-close-btn" onClick={onClose}>
           Fermer

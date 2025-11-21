@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import AfficheModal from "./HistoriqueModalSpec";
+import AfficheModal from "./HistoriqueModalSpec"; // Assure-toi que le chemin est correct
 
 function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("fr-FR", {
+  return new Date(dateString).toLocaleDateString("fr-FR", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   });
 }
 
-export default function Affiche({ accountId }) {
+export default function Historique() {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const token = Cookies.get("access_token");
@@ -20,102 +20,143 @@ export default function Affiche({ accountId }) {
   const userId = user?.id;
 
   useEffect(() => {
-    if (!accountId || !userId) return;
+    if (!userId || !token) return;
 
-    async function fetchTransactions() {
+    async function loadAllTransactions() {
       try {
-        const [depositsRes, withdrawsRes, transfersSentRes, transfersReceivedRes] =
-          await Promise.all([
-            fetch(`http://127.0.0.1:8000/balances/deposits/${accountId}/${userId}`, {
+        // 1️⃣ Récupérer tous les comptes de l'utilisateur
+        const accountsRes = await fetch("http://127.0.0.1:8000/accounts/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!accountsRes.ok) {
+          console.warn("Impossible d'obtenir les comptes :", accountsRes.status);
+          setLoading(false);
+          return;
+        }
+
+        const accounts = await accountsRes.json();
+        if (!accounts.length) {
+          console.log("Aucun compte trouvé");
+          setLoading(false);
+          return;
+        }
+
+        let allTransactions = [];
+
+        // Pour créer un mapping id -> type compte pour les virements
+        const accountMap = {};
+        accounts.forEach(acc => {
+          accountMap[acc.id] = acc.type;
+        });
+
+        // 2️⃣ Récupérer dépôts et retraits
+        for (const acc of accounts) {
+          const [depositsRes, withdrawsRes] = await Promise.all([
+            fetch(`http://127.0.0.1:8000/balances/deposits/${acc.id}/${userId}`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            fetch(`http://127.0.0.1:8000/balances/withdraws/${accountId}/${userId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            fetch(`http://127.0.0.1:8000/transfers/sent/${accountId}/${userId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            fetch(`http://127.0.0.1:8000/transfers/received/${accountId}/${userId}`, {
+            fetch(`http://127.0.0.1:8000/balances/withdraws/${acc.id}/${userId}`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
 
-        const deposits = await depositsRes.json();
-        const withdraws = await withdrawsRes.json();
-        const transfersSent = await transfersSentRes.json();
-        const transfersReceived = await transfersReceivedRes.json();
+          const deposits = depositsRes.ok ? await depositsRes.json() : [];
+          const withdraws = withdrawsRes.ok ? await withdrawsRes.json() : [];
 
-        const formatted = [
-          // DEPOTS
-          ...deposits.map((d) => ({
-            Date: formatDate(d.date),
-            Beneficiaries: "Vous",
-            Categorie: "Dépôt reçu",
-            Solde: `+${d.amount}€`,
-          })),
+          allTransactions.push(
+            ...deposits.map((d) => ({
+              date: formatDate(d.date),
+              label: `Dépôt sur ${acc.type}`,
+              amount: `+${d.amount}€`,
+              category: "Dépôt",
+            }))
+          );
 
-          // RETRAITS
-          ...withdraws.map((w) => ({
-            Date: formatDate(w.date),
-            Beneficiaries: "Vous",
-            Categorie: "Retrait",
-            Solde: `-${w.amount}€`,
-          })),
+          allTransactions.push(
+            ...withdraws.map((w) => ({
+              date: formatDate(w.date),
+              label: `Retrait sur ${acc.type}`,
+              amount: `-${w.amount}€`,
+              category: "Retrait",
+            }))
+          );
+        }
 
-          // TRANSFERTS ENVOYÉS
-          ...transfersSent.map((t) => ({
-            Date: formatDate(t.date),
-            Beneficiaries: t.receiver_name || "Destinataire inconnu",
-            Categorie: "Virement envoyé",
-            Solde: `-${t.amount}€`,
-          })),
+        // 3️⃣ Récupérer tous les virements
+        const transfersRes = await fetch(
+          `http://127.0.0.1:8000/balances/transfers/user/${userId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-          // TRANSFERTS RECUS
-          ...transfersReceived.map((t) => ({
-            Date: formatDate(t.date),
-            Beneficiaries: t.sender_name || "Expéditeur inconnu",
-            Categorie: "Virement reçu",
-            Solde: `+${t.amount}€`,
-          })),
-        ];
+        if (transfersRes.ok) {
+          const transfers = await transfersRes.json();
 
-        // Trie du plus récent au plus ancien
-        formatted.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+          allTransactions.push(
+            ...transfers.map((t) => {
+                const isSent = accounts.some(acc => acc.id === t.from_account_id);
+                const fromType = accountMap[t.from_account_id] || `Compte ${t.from_account_id}`;
+                const toType = accountMap[t.to_account_id] || `Compte ${t.to_account_id}`;
 
-        setTransactions(formatted);
-      } catch (err) {
-        console.error("Erreur chargement transactions :", err);
+                return {
+                date: formatDate(t.date),
+                label: isSent
+                    ? `Virement envoyé vers ${toType}`
+                    : `Virement reçu de ${fromType}`,
+                amount: isSent ? `-${t.amount}€` : `+${t.amount}€`,
+                category: "Virement",
+                from_account: fromType,
+                to_account: toType,
+                };
+            })
+            );
+        }
+
+        // Trier par date DESC
+        allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        setTransactions(allTransactions);
+      } catch (error) {
+        console.error("Erreur chargement historique :", error);
+      } finally {
+        setLoading(false);
       }
     }
 
-    fetchTransactions();
-  }, [accountId, userId]);
+    loadAllTransactions();
+  }, [userId, token]);
 
-  const openModal = (t) => setSelectedTransaction(t);
-  const closeModal = () => setSelectedTransaction(null);
+  if (loading) return <p>Chargement...</p>;
 
   return (
     <div className="transaction-container">
-      {transactions.length === 0 && <p>Aucune transaction trouvée.</p>}
+      <h2>Historique des transactions</h2>
 
-      {transactions.map((t, index) => (
-        <div key={index}>
-          <div className="transaction-date">{t.Date}</div>
-          <div
+      {transactions.length === 0 ? (
+        <p>Aucune transaction trouvée.</p>
+      ) : (
+        transactions.map((t, i) => (
+          <button
+            key={i}
             className="transaction-item"
-            onClick={() => openModal(t)}
-            style={{ cursor: "pointer" }}
+            onClick={() => setSelectedTransaction(t)}
           >
             <div className="transaction-left">
-              <div className="transaction-beneficiary">{t.Beneficiaries}</div>
-              <div className="transaction-category">{t.Categorie}</div>
+              <span className="transaction-beneficiary">{t.label}</span>
+              <span className="transaction-category transaction-date">{t.date}</span>
             </div>
-            <div className="transaction-saldo">{t.Solde}</div>
-          </div>
-        </div>
-      ))}
+            <div className="transaction-saldo">{t.amount}</div>
+          </button>
+        ))
+      )}
 
-      <AfficheModal transaction={selectedTransaction} onClose={closeModal} />
+      {selectedTransaction && (
+        <AfficheModal
+          transaction={selectedTransaction}
+          onClose={() => setSelectedTransaction(null)}
+        />
+      )}
     </div>
   );
 }
+
