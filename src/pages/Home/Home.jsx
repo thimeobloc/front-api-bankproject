@@ -89,12 +89,10 @@ export default function Home() {
       <nav className="navbar">
         <ul>
           <li>Compte principal</li>
-          <li>Épargne</li>
           <li>
             <a onClick={openPopup}>Nouveau compte</a>
           </li>
           <li>Historique</li>
-          <li>Infos personnelles</li>
         </ul>
       </nav>
 
