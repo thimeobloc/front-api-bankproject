@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 
-export default function WithdrawModal({ account, withdrawAmount, setWithdrawAmount, setShowWithdrawModal, fetchTransactions, refreshAccount }) {
+export default function WithdrawModal({
+  account,
+  withdrawAmount,
+  setWithdrawAmount,
+  setShowWithdrawModal,
+  fetchTransactions,
+  refreshAccount
+}) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleWithdraw = async () => {
@@ -34,8 +41,10 @@ export default function WithdrawModal({ account, withdrawAmount, setWithdrawAmou
       setWithdrawAmount("");
       setShowWithdrawModal(false);
       setErrorMessage("");
-      fetchTransactions();
-      refreshAccount();
+
+      // 🔹 Recharger transactions et compte
+      await fetchTransactions();
+      await refreshAccount();
     } catch (err) {
       console.error(err);
       setErrorMessage("Erreur réseau.");
@@ -46,16 +55,13 @@ export default function WithdrawModal({ account, withdrawAmount, setWithdrawAmou
     <div className="modal-overlay">
       <div className="modal-content">
         <h2>Retrait</h2>
-
         <input
           type="number"
           value={withdrawAmount}
           onChange={e => setWithdrawAmount(e.target.value)}
           placeholder="Montant (€)"
         />
-
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-
         <div className="modal-actions">
           <button className="btn" onClick={() => setShowWithdrawModal(false)}>Annuler</button>
           <button className="btn" onClick={handleWithdraw}>Confirmer</button>

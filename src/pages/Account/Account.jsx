@@ -22,11 +22,13 @@ export default function Account() {
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [showCloseModal, setShowCloseModal] = useState(false);
 
+  // Récupérer le compte sélectionné depuis le localStorage
   useEffect(() => {
     const savedAccount = localStorage.getItem("selectedAccount");
     if (savedAccount) setAccount(JSON.parse(savedAccount));
   }, []);
 
+  // Rafraîchir le compte depuis le serveur
   const refreshAccount = async () => {
     if (!account) return;
     try {
@@ -34,13 +36,16 @@ export default function Account() {
       const res = await fetch(`http://localhost:8000/accounts/${account.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (!res.ok) return;
       const data = await res.json();
       setAccount(data);
+      localStorage.setItem("selectedAccount", JSON.stringify(data));
     } catch (error) {
       console.error("Erreur lors du rafraîchissement :", error);
     }
   };
 
+  // Récupérer le nom de l'utilisateur
   useEffect(() => {
     if (!account) return;
 
@@ -48,8 +53,12 @@ export default function Account() {
       try {
         const token = Cookies.get("access_token");
         const res = await fetch(`http://localhost:8000/users/${account.user_id}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
+        if (!res.ok) {
+          setUserName("John Doe");
+          return;
+        }
         const data = await res.json();
         setUserName(data.name);
       } catch {
@@ -60,22 +69,26 @@ export default function Account() {
     fetchUser();
   }, [account]);
 
+  // Récupérer les transactions du compte
   const fetchTransactions = async () => {
     if (!account) return;
     try {
       const token = Cookies.get("access_token");
 
-      const deposits = await (await fetch(`http://localhost:8000/balances/deposits/${account.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })).json();
+      const depositsRes = await fetch(`http://localhost:8000/balances/deposits/${account.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const deposits = (await depositsRes.json()) || [];
 
-      const withdraws = await (await fetch(`http://localhost:8000/balances/withdraws/${account.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })).json();
+      const withdrawsRes = await fetch(`http://localhost:8000/balances/withdraws/${account.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const withdraws = (await withdrawsRes.json()) || [];
 
-      let transfers = await (await fetch(`http://localhost:8000/balances/transfers`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })).json();
+      let transfersRes = await fetch(`http://localhost:8000/balances/transfers`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      let transfers = (await transfersRes.json()) || [];
 
       transfers = transfers.filter(
         t => t.from_account_id === account.id || t.to_account_id === account.id
@@ -89,8 +102,8 @@ export default function Account() {
           type: "Transfert",
           amount: t.amount,
           date: t.date,
-          direction: t.from_account_id === account.id ? "Envoyé" : "Reçu"
-        }))
+          direction: t.from_account_id === account.id ? "Envoyé" : "Reçu",
+        })),
       ];
 
       all.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -98,23 +111,28 @@ export default function Account() {
       setTransactions(all);
     } catch (err) {
       console.error(err);
+      setTransactions([]);
     }
   };
 
-  useEffect(() => {
-    if (account) fetchTransactions();
-  }, [account]);
-
+  // Mettre à jour les transactions filtrées
   useEffect(() => {
     if (filter === "Tous") setFilteredTransactions(transactions);
     else setFilteredTransactions(transactions.filter(t => t.type === filter));
   }, [filter, transactions]);
 
+  // Charger les transactions à chaque changement de compte
+  useEffect(() => {
+    if (account) fetchTransactions();
+  }, [account]);
+
   if (!account) {
     return (
       <div className="account-page">
         <h2>Aucun compte sélectionné</h2>
-        <button className="btn" onClick={() => navigate("/")}>Retour</button>
+        <button className="btn" onClick={() => navigate("/")}>
+          Retour
+        </button>
       </div>
     );
   }
@@ -122,6 +140,7 @@ export default function Account() {
   return (
     <section className="account-page two-columns">
       <AccountInfo
+        key={account.id + account.balance}
         account={account}
         userName={userName}
         transactions={transactions}
