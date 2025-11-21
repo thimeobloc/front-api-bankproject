@@ -1,19 +1,17 @@
 import React from "react";
-import Cookies from "js-cookie";
 
 export default function TransactionsTable({ transactions, filteredTransactions, filter, setFilter }) {
-  const filterOptions = ["Tous","Dépôt","Retrait","Transfert"];
+  const filterOptions = ["Tous", "Dépôt", "Retrait", "Transfert"];
 
   return (
     <div className="transactions-column">
       <h1>Historique des transactions</h1>
 
-      {/* Boutons pour filtrer les transactions */}
       <div className="transaction-filter-buttons">
         {filterOptions.map(option => (
-          <button 
-            key={option} 
-            className={`btn filter-btn ${filter === option ? "active":""}`} 
+          <button
+            key={option}
+            className={`btn filter-btn ${filter === option ? "active" : ""}`}
             onClick={() => setFilter(option)}
           >
             {option}
@@ -21,11 +19,13 @@ export default function TransactionsTable({ transactions, filteredTransactions, 
         ))}
       </div>
 
-      {/* Tableau des transactions */}
       <table className="transactions-table">
         <thead>
           <tr>
-            <th>ID</th><th>Type</th><th>Montant (€)</th><th>Date</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Montant (€)</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
