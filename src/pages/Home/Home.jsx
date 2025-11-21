@@ -92,7 +92,10 @@ export default function Home() {
           <li>
             <a onClick={openPopup}>Nouveau compte</a>
           </li>
-          <li>Historique</li>
+          <li onClick={() => handleNavigation("/historique")} style={{ cursor: "pointer" }}>
+            Historique
+            </li>
+          <li>Infos personnelles</li>
         </ul>
       </nav>
 

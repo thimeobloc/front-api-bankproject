@@ -57,17 +57,16 @@
 }
 
 .transaction-item {
-  border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 12px;
   display: flex;
-  justify-content: space-between;
-  width: 400px;
-  max-width: 400px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 20px;
+  margin-bottom: 10px;
   background-color: #80ffd776;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  border-radius: 12px;
   border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .transaction-item:hover {
@@ -84,20 +83,22 @@
 .transaction-beneficiary {
   font-weight: 700;
   font-size: 15px;
-  margin-bottom: 3px;
-  color : #031f2d;
-
+  color: #031f2d;
 }
 
-.transaction-category {
+.transaction-date {
   font-size: 12px;
-  color : #031f2d;
+  color: #031f2d;
+  opacity: 0.7;
+  margin-top: 2px;
 }
 
 .transaction-saldo {
   font-weight: bold;
   font-size: 15px;
-  color : #031f2d;
+  color: #031f2d;
+  align-self: flex-end;
+  margin-top: -22px; /* remonte le montant à droite de la ligne principale */
 }
 
 /* ==================== */
