@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
-import "./header.css";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./header.css";
 
-export default function Header() {
+export default function Header({ user, setUser }) {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-        }
-    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        setUser(null);
         navigate("/Login");
-        window.location.reload();
     };
 
     const handleNavigation = (path) => {

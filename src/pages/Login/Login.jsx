@@ -6,9 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-
-
-export default function Login() {
+export default function Login({ setUser }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -32,10 +30,9 @@ export default function Login() {
 
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
             localStorage.setItem("user", JSON.stringify(userResponse.data));
+            setUser(userResponse.data);
 
             navigate("/");
-            window.location.reload(); // force Header update
-
         } catch (err) {
             if (err.response && err.response.data && err.response.data.detail) {
                 const detail = err.response.data.detail;

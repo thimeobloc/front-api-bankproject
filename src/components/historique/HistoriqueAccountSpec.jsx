@@ -53,10 +53,10 @@ export default function Historique() {
         // 2️⃣ Récupérer dépôts et retraits
         for (const acc of accounts) {
           const [depositsRes, withdrawsRes] = await Promise.all([
-            fetch(`http://127.0.0.1:8000/balances/deposits/${acc.id}/${userId}`, {
+            fetch(`http://127.0.0.1:8000/balances/deposits/${acc.id}`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            fetch(`http://127.0.0.1:8000/balances/withdraws/${acc.id}/${userId}`, {
+            fetch(`http://127.0.0.1:8000/balances/withdraws/${acc.id}`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -84,10 +84,9 @@ export default function Historique() {
         }
 
         // 3️⃣ Récupérer tous les virements
-        const transfersRes = await fetch(
-          `http://127.0.0.1:8000/balances/transfers/user/${userId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const transfersRes = await fetch(`http://127.0.0.1:8000/balances/transfers`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (transfersRes.ok) {
           const transfers = await transfersRes.json();
@@ -99,17 +98,17 @@ export default function Historique() {
                 const toType = accountMap[t.to_account_id] || `Compte ${t.to_account_id}`;
 
                 return {
-                date: formatDate(t.date),
-                label: isSent
-                    ? `Virement envoyé vers ${toType}`
-                    : `Virement reçu de ${fromType}`,
-                amount: isSent ? `-${t.amount}€` : `+${t.amount}€`,
-                category: "Virement",
-                from_account: fromType,
-                to_account: toType,
+                  date: formatDate(t.date),
+                  label: isSent
+                      ? `Virement envoyé vers ${toType}`
+                      : `Virement reçu de ${fromType}`,
+                  amount: isSent ? `-${t.amount}€` : `+${t.amount}€`,
+                  category: "Virement",
+                  from_account: fromType,
+                  to_account: toType,
                 };
             })
-            );
+          );
         }
 
         // Trier par date DESC
@@ -159,4 +158,3 @@ export default function Historique() {
     </div>
   );
 }
-

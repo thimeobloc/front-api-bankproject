@@ -9,73 +9,67 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 20px 40px;
-  padding-top: 0; /* pas de marge inutile */
+  padding: 0 40px;
   box-sizing: border-box;
 }
 
-/* NAVBAR */
-.navbar {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: -50px;
-}
-
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  padding: 0;
-}
-
-.navbar li {
-  cursor: pointer;
-  transition: color 0.2s;
-  font-size: 1.1rem;
-}
-
-.navbar li:hover {
-  color: #ffd700;
-}
-
-/* HEADER INTERNE */
 .home-header {
   text-align: center;
-  margin: 0; /* supprime toute marge haute et basse */
+  margin: 0;
   padding: 0;
 }
 
 .home-header h1 {
   font-size: 2.8rem;
-  margin: 0; /* supprime la marge haute par défaut */
+  margin: 0;
 }
 
 .home-header p {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0; /* pas de marge supplémentaire */
-  padding-top: 5px; /* petit espacement sous le titre */
+  margin: 0;
+  padding: 0;
 }
 
-/* BALANCE */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.action-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .balance-section h2 {
   font-size: 2rem;
-  margin: 15px 0 25px 0;
+  margin: 0;
   text-align: center;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* ACCOUNTS */
 .accounts-section {
   width: 100%;
   max-width: 1000px;
-  margin: 0 auto 50px;
+  margin: 0 auto 0;
 }
 
 .accounts-section h3 {
   text-align: center;
-  margin: 10px 0 20px 0;
+  margin: 0;
   font-size: 1.8rem;
 }
 
@@ -104,8 +98,12 @@ body {
 }
 
 .account-card h4 {
-  margin-bottom: 10px;
+  margin: 0 0 5px 0;
   font-size: 1.5rem;
+}
+
+.account-card p {
+  margin: 0;
 }
 
 .account-card p:nth-of-type(1) {
@@ -123,9 +121,8 @@ body {
   display: block;
 }
 
-/* QUICK ACTIONS */
 .quick-actions button {
-  margin: 6px;
+  margin: 0 3px;
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
@@ -140,7 +137,6 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-/* FOOTER */
 .home-footer {
   margin-top: auto;
   text-align: center;
@@ -149,10 +145,9 @@ body {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* WELCOME */
 .welcome-section {
   text-align: center;
-  margin-top: 0; /* plus de marge inutile */
+  margin: 0;
 }
 
 .welcome-section h1 {
@@ -163,10 +158,32 @@ body {
 .welcome-section p {
   font-size: 1.3rem;
   margin: 0;
-  padding-top: 5px;
+  padding: 0;
 }
 
-/* ------------------- MODAL RIB ------------------- */
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.auth-buttons button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.auth-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .rib-modal-overlay {
   position: fixed;
   top: 0;
@@ -194,13 +211,13 @@ body {
 }
 
 .rib-modal h2 {
-  margin-bottom: 15px;
+  margin: 0 0 10px 0;
 }
 
 .rib-modal p {
   font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin: 0 0 10px 0;
 }
 
 .rib-modal button {
@@ -215,7 +232,7 @@ body {
 }
 
 .rib-modal button:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 @keyframes fadeIn {
@@ -223,7 +240,6 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* RESPONSIVE */
 @media (max-width: 1024px) {
   .account-card {
     width: calc(50% - 20px);
@@ -237,14 +253,13 @@ body {
 
   .navbar ul {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
   }
 }
 
-/* AJUSTEMENT PADDING-TOP POUR HEADER FIXE */
 @media (max-width: 950px) {
   .home-container {
-    padding-top: 60px;
+    padding-top: 0;
   }
 }
