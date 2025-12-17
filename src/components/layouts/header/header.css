@@ -57,3 +57,10 @@ header {
     cursor: pointer;
     font-weight: 500;
 }
+
+.logo-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}

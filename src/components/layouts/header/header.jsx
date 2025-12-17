@@ -21,13 +21,17 @@ export default function Header({ user, setUser }) {
         <header>
             <div className="header-container">
                 <div className="logo-container">
+                    <button
+                    className="logo-button"
+                    onClick={() => handleNavigation("/")}
+                    aria-label="Retour à l'accueil"
+                    >
                     <img
                         className="logo"
                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F021%2F944%2F628%2Fnon_2x%2Fbank-logo-or-icon-design-on-white-background-illustration-vector.jpg&f=1&nofb=1"
                         alt="Logo"
-                        onClick={() => handleNavigation("/")}
-                        style={{ cursor: "pointer" }}
                     />
+                    </button>
                 </div>
 
                 <button
