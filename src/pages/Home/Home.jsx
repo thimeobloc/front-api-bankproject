@@ -136,7 +136,7 @@ export default function Home() {
               className={`account-card ${account.type === "Compte courant" ? "current-account" : ""}`}
             >
               {/* Redirection vers la page du compte au clic */}
-              <div onClick={() => handleNavigation(`/account/${account.id}`, account)}>
+              <div onClick={() => handleNavigation(`/account/${account.id}`, account)} role="button">
                 <h4>{account.type}</h4>
                 <p>Solde : {account.balance.toFixed(2)} €</p>
                 <p>RIB : {account.rib}</p>
