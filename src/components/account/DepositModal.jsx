@@ -88,3 +88,20 @@ export default function DepositModal({
     </div>
   );
 }
+
+DepositModal.propTypes = {
+  account: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    user_id: PropTypes.number.isRequired,
+  }).isRequired,
+
+  depositAmount: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+
+  setDepositAmount: PropTypes.func.isRequired,
+  setShowDepositModal: PropTypes.func.isRequired,
+  fetchTransactions: PropTypes.func.isRequired,
+  refreshAccount: PropTypes.func.isRequired,
+};
