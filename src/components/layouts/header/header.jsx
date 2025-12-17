@@ -43,16 +43,24 @@ export default function Header({ user, setUser }) {
 
                 <nav className="menu">
                     <ul>
-                        {!user ? (
-                            <>
-                                <li><a onClick={() => handleNavigation("/Login")}>Se connecter</a></li>
-                                <li><a onClick={() => handleNavigation("/Signing")}>S'inscrire</a></li>
-                            </>
+                        {user ? (
+                        <>
+                            <li>
+                            <button onClick={() => handleNavigation("/Transfert")}>Transfert</button>
+                            </li>
+                            <li>
+                            <button onClick={handleLogout}>Déconnexion</button>
+                            </li>
+                        </>
                         ) : (
-                            <>
-                                <li><a onClick={() => handleNavigation("/Transfert")}>Transfert</a></li>
-                                <li><a onClick={handleLogout}>Déconnexion</a></li>
-                            </>
+                        <>
+                            <li>
+                            <button onClick={() => handleNavigation("/Login")}>Se connecter</button>
+                            </li>
+                            <li>
+                            <button onClick={() => handleNavigation("/Signing")}>S'inscrire</button>
+                            </li>
+                        </>
                         )}
                     </ul>
                 </nav>
