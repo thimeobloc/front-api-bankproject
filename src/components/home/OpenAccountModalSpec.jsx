@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "../../../src/pages/Account/Account.css";
 import axios from "axios";
 import Cookies from "js-cookie";
+import PropTypes from "prop-types";
 
 export default function OpenAccountModal({
     isOpen,
@@ -129,3 +130,21 @@ export default function OpenAccountModal({
         </div>
     );
 }
+
+OpenAccountModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+
+  title: PropTypes.string,
+  paragraphe: PropTypes.string,
+
+  accountTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  existingAccounts: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+
+  children: PropTypes.node,
+};
