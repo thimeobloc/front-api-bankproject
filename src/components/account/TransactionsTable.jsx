@@ -42,3 +42,34 @@ export default function TransactionsTable({ transactions, filteredTransactions, 
     </div>
   );
 }
+
+TransactionsTable.propTypes = {
+  transactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      type: PropTypes.string.isRequired,
+      direction: PropTypes.string,
+      amount: PropTypes.number,
+      date: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date),
+      ]),
+    })
+  ).isRequired,
+
+  filteredTransactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      type: PropTypes.string.isRequired,
+      direction: PropTypes.string,
+      amount: PropTypes.number,
+      date: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date),
+      ]),
+    })
+  ).isRequired,
+
+  filter: PropTypes.string.isRequired,
+  setFilter: PropTypes.func.isRequired,
+};
