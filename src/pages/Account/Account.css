@@ -71,7 +71,7 @@ body {
   font-weight: bold;
   text-align: center;
   background-color: rgba(255,255,255,0.2);
-  color: #ffffffdf;
+  color: #000;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -141,7 +141,7 @@ body {
   border-radius: 12px;
   border: none;
   background-color: rgba(255,255,255,0.2);
-  color: #fff;
+  color: #000;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
@@ -210,7 +210,7 @@ body {
   border: none;
   outline: none;
   background: rgba(255,255,255,0.2);
-  color: #fff;
+  color: #000;
   font-size: 1rem;
   text-align: center;
   transition: 0.2s;
