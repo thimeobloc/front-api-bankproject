@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
+import PropTypes from "prop-types";
 
 export default function Header({ user, setUser }) {
     const navigate = useNavigate();
@@ -55,3 +56,12 @@ export default function Header({ user, setUser }) {
         </header>
     );
 }
+
+Header.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.oneOf([null]),
+  ]),
+
+  setUser: PropTypes.func.isRequired,
+};
