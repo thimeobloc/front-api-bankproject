@@ -1,5 +1,6 @@
 import React from "react";
 import Cookies from "js-cookie";
+import PropTypes from "prop-types";
 
 export default function CloseAccountModal({ account, setAccount, setShowCloseModal, refreshAccount }) {
 
@@ -37,3 +38,17 @@ export default function CloseAccountModal({ account, setAccount, setShowCloseMod
     </div>
   );
 }
+
+CloseAccountModal.propTypes = {
+  account: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    balance: PropTypes.number,
+    closed: PropTypes.bool,
+    type: PropTypes.string,
+  }).isRequired,
+
+  setAccount: PropTypes.func.isRequired,
+  setShowCloseModal: PropTypes.func.isRequired,
+  refreshAccount: PropTypes.func.isRequired,
+};
+
