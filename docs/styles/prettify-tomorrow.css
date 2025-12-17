@@ -120,11 +120,17 @@ li.L5,
 li.L6,
 li.L7,
 li.L8,
-li.L9 {}
+li.L9
+{
+  /* vide volontairement */
+}
 
 /* Alternate shading for lines */
 li.L1,
 li.L3,
 li.L5,
 li.L7,
-li.L9 {}
+li.L9
+{
+  /* vide volontairement */
+}
