@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import PropTypes from "prop-types";
 
 export default function Login({ setUser }) {
     const [email, setEmail] = useState("");
@@ -79,3 +80,7 @@ export default function Login({ setUser }) {
         </div>
     );
 }
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
