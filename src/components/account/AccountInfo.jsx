@@ -92,7 +92,12 @@ export default function AccountInfo({
 
       <div className="account-info">
         <p><strong>Type:</strong> {account?.type || "-"}</p>
-        <p><strong>Balance:</strong> {account?.balance != null ? account.balance.toFixed(2) : "-"} €</p>
+        <p>
+          <strong>Balance:</strong>{" "}
+          {account?.balance !== null && account?.balance !== undefined
+            ? account.balance.toFixed(2)
+            : "-"} €
+        </p>
         <p><strong>RIB:</strong> {account?.rib || "-"}</p>
         <p><strong>Creation Date:</strong> {account?.date ? new Date(account.date).toLocaleString() : "-"}</p>
         <p><strong>Status:</strong> {account?.closed ? "Closed" : "Active"}</p>
