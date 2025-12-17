@@ -16,7 +16,7 @@ COPY . .
 # Build de l'application Vite
 RUN npm run build
 
-# Étape de production (Nginx)
+# Étape de production (Nginx) (Nginx est le serveur web qui distribue les fichiers HTML/CSS/JS buildés.)
 FROM nginx:alpine
 
 # Suppression de la config Nginx par défaut
