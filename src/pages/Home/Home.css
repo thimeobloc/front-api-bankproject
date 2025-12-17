@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Arial, sans-serif";
+  font-family: Arial, sans-serif;
   background: var(--primary-gradient);
   color: #fff;
 }
@@ -45,7 +45,7 @@ body {
   border: none;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: #000;
   font-weight: bold;
   transition: background 0.2s;
 }
@@ -129,7 +129,7 @@ body {
   cursor: pointer;
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: #000;
   transition: background 0.2s;
 }
 
@@ -175,7 +175,7 @@ body {
   border: none;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: #000;
   font-weight: bold;
   transition: background 0.2s;
 }
@@ -225,7 +225,7 @@ body {
   border: none;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  color: #000;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
