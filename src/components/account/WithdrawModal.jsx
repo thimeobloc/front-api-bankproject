@@ -70,3 +70,21 @@ export default function WithdrawModal({
     </div>
   );
 }
+
+WithdrawModal.propTypes = {
+  account: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    user_id: PropTypes.number.isRequired,
+    balance: PropTypes.number.isRequired,
+  }).isRequired,
+
+  withdrawAmount: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+
+  setWithdrawAmount: PropTypes.func.isRequired,
+  setShowWithdrawModal: PropTypes.func.isRequired,
+  fetchTransactions: PropTypes.func.isRequired,
+  refreshAccount: PropTypes.func.isRequired,
+};
