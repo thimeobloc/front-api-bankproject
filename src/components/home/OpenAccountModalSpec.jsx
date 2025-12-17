@@ -88,7 +88,9 @@ export default function OpenAccountModal({
                 <h2>{title}</h2>
                 <p>{paragraphe}</p>
 
-                <label>Type de compte :</label>
+                <label>
+                <input type="text" />Type de compte
+                </label>
 
                 {/* Affiche un message si plus aucun type dispo */}
                 {availableTypes.length === 0 ? (
