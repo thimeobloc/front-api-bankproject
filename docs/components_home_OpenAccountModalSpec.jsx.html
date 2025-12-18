@@ -1,4 +1,32 @@
-import React, { useRef, useEffect, useState } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/home/OpenAccountModalSpec.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/home/OpenAccountModalSpec.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useRef, useEffect, useState } from "react";
 import "../../../src/pages/Account/Account.css";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -16,8 +44,8 @@ import PropTypes from "prop-types";
  * @param {function} props.onClose - Callback function to close the modal
  * @param {string} [props.title] - Modal title
  * @param {string} [props.paragraphe] - Modal paragraph/description
- * @param {Array<string>} props.accountTypes - All possible account types
- * @param {Array<Object>} props.existingAccounts - User's existing accounts
+ * @param {Array&lt;string>} props.accountTypes - All possible account types
+ * @param {Array&lt;Object>} props.existingAccounts - User's existing accounts
  * @param {string} props.existingAccounts[].type - Type of an existing account
  * @param {React.ReactNode} [props.children] - Optional children to render inside the modal
  */
@@ -81,7 +109,7 @@ export default function OpenAccountModal({
     const popupRef = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (popupRef.current && !popupRef.current.contains(event.target)) {
+            if (popupRef.current &amp;&amp; !popupRef.current.contains(event.target)) {
                 onClose();
             }
         };
@@ -98,37 +126,37 @@ export default function OpenAccountModal({
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content" ref={popupRef}>
-                <h2>{title}</h2>
-                <p>{paragraphe}</p>
+        &lt;div className="modal-overlay">
+            &lt;div className="modal-content" ref={popupRef}>
+                &lt;h2>{title}&lt;/h2>
+                &lt;p>{paragraphe}&lt;/p>
 
-                <label>
-                  <input type="text" />Type de compte
-                </label>
+                &lt;label>
+                  &lt;input type="text" />Type de compte
+                &lt;/label>
 
                 {availableTypes.length === 0 ? (
-                    <p style={{ color: "#ff8080", fontWeight: "bold", marginTop: "10px" }}>
+                    &lt;p style={{ color: "#ff8080", fontWeight: "bold", marginTop: "10px" }}>
                         Vous avez déjà ouvert tous les types de comptes disponibles.
-                    </p>
+                    &lt;/p>
                 ) : (
-                    <select
+                    &lt;select
                         value={selectedType}
                         onChange={(e) => setSelectedType(e.target.value)}
                     >
                         {availableTypes.map((type) => (
-                            <option key={type} value={type}>
+                            &lt;option key={type} value={type}>
                                 {type}
-                            </option>
+                            &lt;/option>
                         ))}
-                    </select>
+                    &lt;/select>
                 )}
 
-                {error && <p className="error-message">{error}</p>}
+                {error &amp;&amp; &lt;p className="error-message">{error}&lt;/p>}
 
-                <div className="modal-actions">
-                    <button className="modal-close-btn" onClick={onClose}>Annuler</button>
-                    <button
+                &lt;div className="modal-actions">
+                    &lt;button className="modal-close-btn" onClick={onClose}>Annuler&lt;/button>
+                    &lt;button
                         className="modal-close-btn"
                         onClick={handleSubmit}
                         disabled={availableTypes.length === 0}
@@ -138,12 +166,12 @@ export default function OpenAccountModal({
                         }}
                     >
                         Valider
-                    </button>
-                </div>
+                    &lt;/button>
+                &lt;/div>
 
                 {children}
-            </div>
-        </div>
+            &lt;/div>
+        &lt;/div>
     );
 }
 
@@ -160,3 +188,26 @@ OpenAccountModal.propTypes = {
   ).isRequired,
   children: PropTypes.node,
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#formatDate">formatDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Dec 18 2025 15:51:21 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

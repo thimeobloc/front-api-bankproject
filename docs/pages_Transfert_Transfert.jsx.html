@@ -1,4 +1,32 @@
-import React, { useEffect, useState } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Transfert/Transfert.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Transfert/Transfert.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from 'react';
 import BeneficiaryCard from "../../components/beneficiary/BeneficiaryCard.jsx";
 import BeneficiaryModal from "../../components/beneficiary/benificiaryModal.jsx";
 import TransferModal from "../../components/transfer/TransferModalSpec.jsx";
@@ -66,10 +94,10 @@ export default function Transfert() {
 
     if (!user) {
         return (
-            <div className="welcome-section">
-                <h1>Bienvenue sur Votre Banque</h1>
-                <p>Connectez-vous pour accéder à vos comptes ou créez un compte.</p>
-            </div>
+            &lt;div className="welcome-section">
+                &lt;h1>Bienvenue sur Votre Banque&lt;/h1>
+                &lt;p>Connectez-vous pour accéder à vos comptes ou créez un compte.&lt;/p>
+            &lt;/div>
         );
     }
 
@@ -91,16 +119,16 @@ export default function Transfert() {
     );
 
     return (
-        <section>
-            <div className="center">
-                <SearchBar query={query} setQuery={setQuery} />
+        &lt;section>
+            &lt;div className="center">
+                &lt;SearchBar query={query} setQuery={setQuery} />
 
                 {/* Sélection du compte source */}
-                <div className="from" style={{ display: isSecondOpen ? "none" : "block" }}>
-                    <div className="list">
-                        <h2>Depuis ...</h2>
+                &lt;div className="from" style={{ display: isSecondOpen ? "none" : "block" }}>
+                    &lt;div className="list">
+                        &lt;h2>Depuis ...&lt;/h2>
                         {account.map((b) => (
-                            <BeneficiaryCard
+                            &lt;BeneficiaryCard
                                 key={b.id}
                                 name={b.type}
                                 iban={b.rib}
@@ -108,18 +136,18 @@ export default function Transfert() {
                                 onClick={() => { setSelectedAccountId(b.id); appearSecond(); }}
                             />
                         ))}
-                    </div>
-                </div>
+                    &lt;/div>
+                &lt;/div>
 
                 {/* Sélection du bénéficiaire */}
-                <div className="to" id="to" style={{ display: isSecondOpen ? "block" : "none" }}>
-                    <div className="list">
+                &lt;div className="to" id="to" style={{ display: isSecondOpen ? "block" : "none" }}>
+                    &lt;div className="list">
                         {filteredBeneficiaries.length === 0 || !query ? (
-                            <>
-                                <h2>Vers ...</h2>
-                                <h3>Vos comptes</h3>
+                            &lt;>
+                                &lt;h2>Vers ...&lt;/h2>
+                                &lt;h3>Vos comptes&lt;/h3>
                                 {account.map((b) => (
-                                    <BeneficiaryCard
+                                    &lt;BeneficiaryCard
                                         key={b.id}
                                         name={b.type}
                                         iban={b.rib}
@@ -128,12 +156,12 @@ export default function Transfert() {
                                     />
                                 ))}
 
-                                <h3>Vos Bénéficiaires</h3>
+                                &lt;h3>Vos Bénéficiaires&lt;/h3>
                                 {beneficiaries.length === 0 ? (
-                                    <p>Il n'y a pas de bénéficiaire.</p>
+                                    &lt;p>Il n'y a pas de bénéficiaire.&lt;/p>
                                 ) : (
                                     beneficiaries.map((b) => (
-                                        <BeneficiaryCard
+                                        &lt;BeneficiaryCard
                                             key={b.id}
                                             name={b.name}
                                             iban={b.rib}
@@ -142,12 +170,12 @@ export default function Transfert() {
                                         />
                                     ))
                                 )}
-                            </>
+                            &lt;/>
                         ) : (
-                            <>
-                                <h2>Vous recherchez : "{query}" ...</h2>
+                            &lt;>
+                                &lt;h2>Vous recherchez : "{query}" ...&lt;/h2>
                                 {filteredBeneficiaries.map((b) => (
-                                    <BeneficiaryCard
+                                    &lt;BeneficiaryCard
                                         key={b.id}
                                         name={b.name}
                                         iban={b.rib}
@@ -155,29 +183,52 @@ export default function Transfert() {
                                         onClick={() => { setSelectedBeneficiaryRib(b.rib); openPopup2(); }}
                                     />
                                 ))}
-                            </>
+                            &lt;/>
                         )}
-                    </div>
-                </div>
-            </div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
 
-            <button className="fixed_button" onClick={openPopup}>Ajouter un IBAN</button>
+            &lt;button className="fixed_button" onClick={openPopup}>Ajouter un IBAN&lt;/button>
 
             {/* Modals */}
-            <BeneficiaryModal
+            &lt;BeneficiaryModal
                 isOpen={isPopupOpen}
                 onClose={closePopup}
                 accountId={current_account}
                 title="Ajouter un Bénéficiaire"
             />
 
-            <TransferModal
+            &lt;TransferModal
                 isOpen={isPopupOpen2}
                 onClose={closePopup2}
                 accountId={selectedAccountId}
                 rib={selectedBeneficiaryRib}
                 title="Faire un nouveau virement"
             />
-        </section>
+        &lt;/section>
     );
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#formatDate">formatDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Dec 18 2025 15:51:21 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

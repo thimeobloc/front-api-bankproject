@@ -1,4 +1,32 @@
-import React, { useState, useEffect } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Home/Home.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Home/Home.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from "react";
 import "./Home.css";
 import "../../../src/pages/Beneficiary/Beneficiary.css";
 import OpenAccountModal from "../../components/home/OpenAccountModalSpec";
@@ -110,68 +138,68 @@ export default function Home() {
   // Si l'utilisateur n'est pas connecté, afficher un message de bienvenue
   if (!user) {
     return (
-      <div className="welcome-section">
-        <h1>Bienvenue sur Votre Banque</h1>
-        <p>Connectez-vous pour accéder à vos comptes ou créez un compte.</p>
-        <div className="auth-buttons">
-          <button onClick={() => navigate("/Login")}>Se connecter</button>
-          <button onClick={() => navigate("/Signing")}>S'inscrire</button>
-        </div>
-      </div>
+      &lt;div className="welcome-section">
+        &lt;h1>Bienvenue sur Votre Banque&lt;/h1>
+        &lt;p>Connectez-vous pour accéder à vos comptes ou créez un compte.&lt;/p>
+        &lt;div className="auth-buttons">
+          &lt;button onClick={() => navigate("/Login")}>Se connecter&lt;/button>
+          &lt;button onClick={() => navigate("/Signing")}>S'inscrire&lt;/button>
+        &lt;/div>
+      &lt;/div>
     );
   }
 
   // Affichage principal pour un utilisateur connecté
   return (
-    <section className="home-container">
+    &lt;section className="home-container">
       {/* En-tête utilisateur */}
-      <div className="home-header">
-        <h1>Bonjour {user.name}</h1>
-        <p>Connecté avec : {user.email}</p>
-      </div>
+      &lt;div className="home-header">
+        &lt;h1>Bonjour {user.name}&lt;/h1>
+        &lt;p>Connecté avec : {user.email}&lt;/p>
+      &lt;/div>
 
       {/* Boutons d'action */}
-      <div className="action-buttons">
-        <button onClick={openPopup}>Nouveau compte</button>
-        <button onClick={() => handleNavigation("/historique")}>Historique</button>
-      </div>
+      &lt;div className="action-buttons">
+        &lt;button onClick={openPopup}>Nouveau compte&lt;/button>
+        &lt;button onClick={() => handleNavigation("/historique")}>Historique&lt;/button>
+      &lt;/div>
 
       {/* Solde total */}
-      <section className="balance-section">
-        <h2>Solde total : {totalBalance.toFixed(2)} €</h2>
-      </section>
+      &lt;section className="balance-section">
+        &lt;h2>Solde total : {totalBalance.toFixed(2)} €&lt;/h2>
+      &lt;/section>
 
       {/* Liste des comptes */}
-      <section className="accounts-section">
-        <h3>Mes comptes</h3>
-        <div className="accounts-list">
+      &lt;section className="accounts-section">
+        &lt;h3>Mes comptes&lt;/h3>
+        &lt;div className="accounts-list">
           {activeAccounts.map((account) => (
-            <div
+            &lt;div
               key={account.id}
               className={`account-card ${account.type === "Compte courant" ? "current-account" : ""}`}
             >
               {/* Redirection vers la page du compte au clic */}
-              <button
+              &lt;button
                 className="account-card-button"
                 onClick={() => handleNavigation(`/account/${account.id}`, account)}
               >
-                <h4>{account.type}</h4>
-                <p>Solde : {account.balance.toFixed(2)} €</p>
-                <p>RIB : {account.rib}</p>
-                <p>Date ouverture : {new Date(account.date).toLocaleString()}</p>
-              </button>
+                &lt;h4>{account.type}&lt;/h4>
+                &lt;p>Solde : {account.balance.toFixed(2)} €&lt;/p>
+                &lt;p>RIB : {account.rib}&lt;/p>
+                &lt;p>Date ouverture : {new Date(account.date).toLocaleString()}&lt;/p>
+              &lt;/button>
 
               {/* Bouton d'accès rapide au RIB */}
-              <div className="quick-actions">
-                <button onClick={() => openRibModal(account.rib)}>RIB</button>
-              </div>
-            </div>
+              &lt;div className="quick-actions">
+                &lt;button onClick={() => openRibModal(account.rib)}>RIB&lt;/button>
+              &lt;/div>
+            &lt;/div>
           ))}
-        </div>
-      </section>
+        &lt;/div>
+      &lt;/section>
 
       {/* Modal pour créer un nouveau compte */}
-      <OpenAccountModal
+      &lt;OpenAccountModal
         isOpen={isPopupOpen}
         onClose={closePopup}
         title="Ouvrir un nouveau compte"
@@ -180,20 +208,43 @@ export default function Home() {
       />
 
       {/* Modal affichant les informations RIB */}
-      {isRibModalOpen && (
-        <div className="rib-modal-overlay">
-          <div className="rib-modal">
-            <h2>Informations RIB</h2>
-            <p>{selectedRib}</p>
-            <button onClick={closeRibModal}>Fermer</button>
-          </div>
-        </div>
+      {isRibModalOpen &amp;&amp; (
+        &lt;div className="rib-modal-overlay">
+          &lt;div className="rib-modal">
+            &lt;h2>Informations RIB&lt;/h2>
+            &lt;p>{selectedRib}&lt;/p>
+            &lt;button onClick={closeRibModal}>Fermer&lt;/button>
+          &lt;/div>
+        &lt;/div>
       )}
 
       {/* Pied de page */}
-      <footer className="home-footer">
-        <p>© 2025 Votre Banque — Tous droits réservés</p>
-      </footer>
-    </section>
+      &lt;footer className="home-footer">
+        &lt;p>© 2025 Votre Banque — Tous droits réservés&lt;/p>
+      &lt;/footer>
+    &lt;/section>
   );
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#formatDate">formatDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Dec 18 2025 15:51:21 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

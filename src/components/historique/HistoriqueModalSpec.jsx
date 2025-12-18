@@ -1,6 +1,20 @@
 import React from "react";
 import '../../../src/pages/Historique/Historique.css';
 
+/**
+ * AfficheModal component.
+ *
+ * Displays the details of a selected transaction in a modal popup.
+ *
+ * @component
+ * @param {Object} props
+ * @param {Object} props.transaction - Transaction object to display
+ * @param {string} props.transaction.label - Beneficiary or transaction label
+ * @param {string} props.transaction.date - Transaction date
+ * @param {string|number} props.transaction.amount - Transaction amount
+ * @param {string} [props.transaction.category] - Transaction category (optional)
+ * @param {function} props.onClose - Callback function to close the modal
+ */
 export default function AfficheModal({ transaction, onClose }) {
   if (!transaction) return null;
 
@@ -8,7 +22,7 @@ export default function AfficheModal({ transaction, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()} // Empêche la fermeture du modal lors d'un clic à l'intérieur
       >
         <h2>Détails de la transaction</h2>
 
