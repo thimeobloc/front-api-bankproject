@@ -4,59 +4,43 @@ import "../../../src/pages/Beneficiary/Beneficiary.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // <-- correction ici
 import PropTypes from "prop-types";
 
 /**
  * Page de connexion de l'utilisateur.
  *
- * Gère :
- * - La saisie des informations de connexion (email et mot de passe)
- * - L'appel API pour authentification
- * - Le stockage du token et des informations utilisateur
- * - La redirection vers la page d'accueil après connexion réussie
- *
  * @component
  * @param {Object} props
- * @param {Function} props.setUser - Fonction pour mettre à jour l'utilisateur dans l'état global
+ * @param {Function} props.setUser - Fonction pour mettre à jour l'utilisateur
  */
 export default function Login({ setUser }) {
-    // États locaux pour les champs de saisie
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
-    /**
-     * Gestion de la soumission du formulaire de connexion
-     * @param {Event} e - Événement de soumission
-     */
     const loginSuccess = async (e) => {
         e.preventDefault();
         setError("");
 
         try {
-            // Appel API pour authentification
             const response = await axios.post("http://127.0.0.1:8000/users/login", { email, password });
 
-            // Récupération du token JWT
             const token = response.data.access_token;
-            Cookies.set("access_token", token, { expires: 1 }); // expire dans 1 jour
+            Cookies.set("access_token", token, { expires: 1 });
 
-            // Décodage du token pour obtenir l'ID utilisateur
-            const decoded = jwtDecode(token);
+            // Décodage du token
+            const decoded = jwtDecode(token); // fonctionne avec import { jwtDecode }
             const userId = decoded.user_id;
 
-            // Récupération des informations utilisateur depuis l'API
             const userResponse = await axios.get(`http://127.0.0.1:8000/users/${userId}`);
             localStorage.setItem("user", JSON.stringify(userResponse.data));
             setUser(userResponse.data);
 
-            // Redirection vers la page d'accueil
             navigate("/");
         } catch (err) {
-            // Gestion des erreurs détaillées
             if (err.response && err.response.data && err.response.data.detail) {
                 const detail = err.response.data.detail;
                 if (Array.isArray(detail)) {
@@ -76,7 +60,6 @@ export default function Login({ setUser }) {
                 <div className="SignForm">
                     <h1>Connexion</h1>
 
-                    {/* Champ email */}
                     <input
                         className="input_field"
                         type="text"
@@ -85,7 +68,6 @@ export default function Login({ setUser }) {
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    {/* Champ mot de passe */}
                     <input
                         className="input_field"
                         type="password"
@@ -94,11 +76,9 @@ export default function Login({ setUser }) {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    {/* Boutons d'action */}
                     <button onClick={loginSuccess}>Se connecter</button>
                     <button onClick={() => navigate("/Signing")}>Je n'ai pas de compte</button>
 
-                    {/* Affichage des messages d'erreur */}
                     {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
             </div>
