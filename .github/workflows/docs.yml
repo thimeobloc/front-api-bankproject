@@ -24,8 +24,9 @@ jobs:
     - name: Generate JSDoc
       run: npm run docs
 
-    - name: Upload Documentation as Artifact
-      uses: actions/upload-artifact@4
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
       with:
-        name: jsdoc-docs
-        path: docs/
+        name: docs
+        path: ./docs
+
