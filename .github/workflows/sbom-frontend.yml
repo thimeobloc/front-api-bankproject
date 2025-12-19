@@ -1,0 +1,42 @@
+name: Generate Frontend SBOM
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # Installer CycloneDX
+      - name: Install CycloneDX
+        run: npm install -g @cyclonedx/bom
+
+      # Générer le SBOM
+      - name: Generate SBOM
+        run: npx cyclonedx-bom -o sbom.json --include-dev -l
+
+      # Upload SBOM comme artefact
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-frontend
+          path: sbom.json
